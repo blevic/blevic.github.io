@@ -1,36 +1,44 @@
-# Brave New Net starter site
+# Brave New Net
 
-This folder is a static GitHub Pages version of your old WordPress site.
+Static site hosted on GitHub Pages.
 
-## Included
-- Home page
-- Blog index
-- About page
-- Contact page
-- 4 published posts
-- `CNAME` file already set to `bravenewnet.com`
+## Structure
 
-## Publish with GitHub Pages
+- `index.html` = homepage
+- `blog/index.html` = blog index
+- `about/index.html` = about page
+- `contact/index.html` = contact page
+- each post lives in its own folder:
+  - `why-this-blog-6g-for-humans-for-machines-and-for-you/`
+  - `the-road-to-6g-how-we-got-here-and-what-comes-next/`
+  - `visions-of-6g-highlights-from-the-3gpp-6g-workshop/`
+  - `esim-alert-gsma-shuts-down-all-ts-48-test-profiles/`
 
-1. Create a public GitHub repository.
-2. Upload every file in this folder to the repo root.
-3. In GitHub:
-   - Settings
-   - Pages
-   - Build and deployment
-   - Source: `Deploy from a branch`
-   - Branch: `main` and `/ (root)`
-4. Wait for the first deployment.
-5. In Pages settings, set the custom domain to `bravenewnet.com` if GitHub has not already picked it up from the `CNAME` file.
-6. In Namecheap DNS, set:
-   - `A` `@` -> `185.199.108.153`
-   - `A` `@` -> `185.199.109.153`
-   - `A` `@` -> `185.199.110.153`
-   - `A` `@` -> `185.199.111.153`
-   - `CNAME` `www` -> `YOUR_GITHUB_USERNAME.github.io`
-7. In GitHub Pages settings, enable HTTPS when it becomes available.
+## How to add a new post
 
-## Optional: restore old images
-This starter kit intentionally removes old WordPress images so the site can go live fast without broken assets.
-If you want the old visuals back later, copy images from your WordPress backup:
-`public_html/wp-content/uploads/`
+1. Duplicate one existing post folder
+2. Rename the folder with the new slug
+3. Edit `index.html` inside that folder
+4. Update:
+   - page title
+   - date
+   - category
+   - h1
+   - post content
+5. Add the new post link manually to:
+   - `blog/index.html`
+   - `index.html` if you want it featured on the home page
+
+## Images
+
+Preferred location:
+- `assets/images/`
+
+Alternative:
+- preserve WordPress-style paths under `wp-content/uploads/...`
+
+## Deployment
+
+The site deploys automatically with GitHub Pages from the `main` branch.
+Custom domain:
+- `bravenewnet.com`
