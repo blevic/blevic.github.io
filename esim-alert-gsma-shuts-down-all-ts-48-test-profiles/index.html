@@ -25,9 +25,15 @@
       <div class="content">
 <p><strong>Disclosure Notice:</strong> <em>If you are a researcher and find any vulnerability in GSMA standards, you are encouraged to report it responsibly through their <a href="https://www.gsma.com/solutions-and-impact/technologies/security/gsma-coordinated-vulnerability-disclosure-programme/" rel="noopener" target="_blank">CVD program</a></em>.</p>
 <p>The GSMA published <strong><a href="https://www.gsma.com/get-involved/working-groups/gsma_resources/ts-48-v7-0-generic-euicc-test-profile-for-device-testing/" rel="noopener" target="_blank">TS.48 v7.0</a></strong> this week, with an official (future) release date of July 1st.</p>
+<figure class="post-image">
+  <img src="../assets/images/TS.48-v7.0-1024x375.png" alt="TS.48 v7.0 screenshot">
+</figure>
 
 <p>As part of this v7.0 release, <strong>all previous versions (v1 to v6) of the generic eSIM TS.48 Test Profile have been explicitly deprecated</strong>. GSMA has also removed all previous TS.48 profile versions from their <a href="https://github.com/GSMATerminals/Generic-eUICC-Test-Profile-for-Device-Testing-Public" rel="noopener" target="_blank">public GitHub repository</a>, suggesting some <strong>security vulnerability</strong> on the previous versions (especially because the v7.0 updates are exclusively security-related changes):</p>
-<blockquote>Commit 8690e20 by GSMA Director Paul Gosden deprecates all TS.48 eSIM profiles</blockquote>
+<figure class="post-image">
+  <img src="../assets/images/TS.48-v1-v6-deprecated.png" alt="Commit deprecating older TS.48 profiles">
+  <figcaption><a href="https://github.com/GSMATerminals/Generic-eUICC-Test-Profile-for-Device-Testing-Public/commit/8690e201a9f88b93c0cb552fc27c3ba4b3da5355" rel="noopener" target="_blank">Commit 8690e20</a> by GSMA Director Paul Gosden deprecates all TS.48 eSIM profiles</figcaption>
+</figure>
 <p>These eSIM Test Profiles are widely used for conformance testing, device certification, and any connection to a test callbox (R&amp;S, Anritsu, Keysight, etc.).</p>
 <p>The changes were approved during <strong>GSMA TSG #60</strong>, held from 10 to 13 June 2025 in Stavanger, Norway. The editors of the change request addressing the security vulnerability (CR1010 v13) are: Apple, Comprion, Dell, Kigen, Qualcomm, Thales, and GSMA. More details on CR1010 v13 are not available yet. But we can have some information from the TS.48 v7 itself.</p>
 <p><strong>Changes introduced in TS.48 v7.0:</strong></p>
@@ -55,7 +61,6 @@
 <p><strong>Disclaimer</strong>: <em>This post is based solely on publicly available information. It does not disclose any confidential information and does not represent any organization I'm affiliated with.</em></p>
 
 </div>
-      <div class="note">Image files were removed from this starter export so the site can go live fast. You can add them later from your old WordPress backup if you want the original visuals back.</div>
     </article>
     <footer class="site">
       <div>Hosted on GitHub Pages.</div>
