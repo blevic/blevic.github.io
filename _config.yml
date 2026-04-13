@@ -1,0 +1,16 @@
+title: Brave New Net
+description: 5G, 6G and beyond
+url: "https://bravenewnet.com"
+baseurl: ""
+footer_text: "© 2026 BraveNewNet · Breno"
+permalink: /:title/
+markdown: kramdown
+kramdown:
+  auto_ids: false
+  smart_quotes: ["apos", "apos", "quot", "quot"]
+  typographic_symbols:
+    hellip: "..."
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
