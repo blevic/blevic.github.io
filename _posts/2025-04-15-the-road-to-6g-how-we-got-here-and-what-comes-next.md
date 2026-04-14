@@ -5,7 +5,7 @@ date: 2025-04-15
 categories: [6G]
 permalink: /the-road-to-6g-how-we-got-here-and-what-comes-next/
 summary: >-
-  It’s a good time to talk about what 6G might look like. 3GPP just held a workshop in Korea last month to discuss perspectives on 6G, and there are some great documents coming from the very people making it, the 3GPP...
+  It’s a good time to talk about what 6G might look like. 3GPP just held a workshop in Korea last month to discuss perspectives on 6G, and there are some great documents coming from the very people making it.
 ---
 It’s a good time to talk about what 6G might look like.
 
