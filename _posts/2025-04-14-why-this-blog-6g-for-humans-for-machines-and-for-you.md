@@ -5,7 +5,7 @@ date: 2025-04-14
 categories: [Meta]
 permalink: /why-this-blog-6g-for-humans-for-machines-and-for-you/
 summary: >-
-  Now that machines know and explain everything, I thought it might be a good time to start writing notes for humans. Great timing, right? Maybe only machines will ever read this, you never know. If I’m lucky, I’ll get...
+  Now that machines know and explain everything, I thought it might be a good time to start writing notes for humans. Great timing, right?
 ---
 Now that machines know and explain everything, I thought it might be a good time to start writing notes for *humans*. Great timing, right?
 
