@@ -5,7 +5,7 @@ description: Convert between NR-ARFCN and frequency in MHz.
 permalink: /nrarfcn-calculator/
 ---
 <section class="tool-page nrarfcn-page" aria-labelledby="nrarfcn-title">
-  <div class="tool-kicker">Mock calculator</div>
+  <div class="tool-kicker">Calculator preview</div>
   <h1 id="nrarfcn-title">NR-ARFCN Calculator</h1>
   <p class="tool-lede">Convert between NR-ARFCN and frequency in MHz.</p>
 
@@ -13,7 +13,7 @@ permalink: /nrarfcn-calculator/
     <div class="converter-grid">
       <label class="converter-panel is-active" data-panel="nrarfcn" for="nrarfcn-input">
         <span class="field-label">NR-ARFCN</span>
-        <input id="nrarfcn-input" name="nrarfcn" type="number" inputmode="numeric" min="0" step="1" placeholder="620000" autocomplete="off">
+        <input id="nrarfcn-input" name="nrarfcn" type="number" inputmode="numeric" min="0" step="1" placeholder="645000" autocomplete="off">
         <span class="field-hint">Channel number</span>
       </label>
 
@@ -22,7 +22,7 @@ permalink: /nrarfcn-calculator/
       <label class="converter-panel" data-panel="frequency" for="frequency-input">
         <span class="field-label">Frequency</span>
         <span class="input-with-unit">
-          <input id="frequency-input" name="frequency" type="number" inputmode="decimal" min="0" step="0.001" placeholder="3500" autocomplete="off">
+          <input id="frequency-input" name="frequency" type="number" inputmode="decimal" min="0" step="0.001" placeholder="3675" autocomplete="off">
           <span class="unit-label">MHz</span>
         </span>
         <span class="field-hint">Center frequency</span>
@@ -36,7 +36,7 @@ permalink: /nrarfcn-calculator/
   </form>
 
   <div class="mock-note">
-    <strong>Prototype math:</strong> NR-ARFCN input is doubled into MHz. Frequency input is tripled into NR-ARFCN.
+    <strong>Calculator status:</strong> Both directions use 3GPP TS 38.104 Table 5.4.2.1-1.
   </div>
 
   <figure class="tool-image">
@@ -44,76 +44,4 @@ permalink: /nrarfcn-calculator/
   </figure>
 </section>
 
-<script>
-(function () {
-  var nrarfcnInput = document.getElementById("nrarfcn-input");
-  var frequencyInput = document.getElementById("frequency-input");
-  var status = document.getElementById("calculator-status");
-  var clearButton = document.getElementById("clear-calculator");
-  var panels = document.querySelectorAll(".converter-panel");
-
-  function formatResult(value) {
-    var rounded = Math.round(value * 1000000) / 1000000;
-    return String(rounded);
-  }
-
-  function setActivePanel(source) {
-    panels.forEach(function (panel) {
-      panel.classList.toggle("is-active", panel.dataset.panel === source);
-    });
-  }
-
-  function updateFrom(source) {
-    var sourceInput = source === "nrarfcn" ? nrarfcnInput : frequencyInput;
-    var targetInput = source === "nrarfcn" ? frequencyInput : nrarfcnInput;
-    var rawValue = sourceInput.value.trim();
-
-    setActivePanel(source);
-
-    if (rawValue === "") {
-      targetInput.value = "";
-      status.textContent = "Type in either box to preview the flow.";
-      return;
-    }
-
-    var value = Number(rawValue);
-    if (!Number.isFinite(value)) {
-      targetInput.value = "";
-      status.textContent = "Use a numeric value.";
-      return;
-    }
-
-    if (source === "nrarfcn") {
-      targetInput.value = formatResult(value * 2);
-      status.textContent = "Mock: NR-ARFCN x 2 -> frequency in MHz.";
-    } else {
-      targetInput.value = formatResult(value * 3);
-      status.textContent = "Mock: frequency x 3 -> NR-ARFCN.";
-    }
-  }
-
-  nrarfcnInput.addEventListener("input", function () {
-    updateFrom("nrarfcn");
-  });
-
-  frequencyInput.addEventListener("input", function () {
-    updateFrom("frequency");
-  });
-
-  nrarfcnInput.addEventListener("focus", function () {
-    setActivePanel("nrarfcn");
-  });
-
-  frequencyInput.addEventListener("focus", function () {
-    setActivePanel("frequency");
-  });
-
-  clearButton.addEventListener("click", function () {
-    nrarfcnInput.value = "";
-    frequencyInput.value = "";
-    setActivePanel("nrarfcn");
-    status.textContent = "Type in either box to preview the flow.";
-    nrarfcnInput.focus();
-  });
-}());
-</script>
+<script src="{{ '/assets/js/nrarfcn-calculator.js' | relative_url }}"></script>
