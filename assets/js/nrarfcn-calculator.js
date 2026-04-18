@@ -438,13 +438,14 @@
     var visual = createElement("div", "band-range-visual");
 
     visual.append(
-      createBandVisualAxis(bounds, frequency),
-      createBandLegend()
+      createBandVisualAxis(bounds, frequency)
     );
 
     matches.forEach(function (match) {
       visual.appendChild(createBandVisualRow(match, bounds, frequency));
     });
+
+    visual.appendChild(createBandLegend());
 
     return visual;
   }
