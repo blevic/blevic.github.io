@@ -428,6 +428,33 @@
       firstRange.high === secondRange.high;
   }
 
+  function getBandFrequencySideLabel(match, frequency) {
+    var inUplink = !!(match.uplink && frequencyIsInRange(frequency, match.uplink.low, match.uplink.high));
+    var inDownlink = !!(match.downlink && frequencyIsInRange(frequency, match.downlink.low, match.downlink.high));
+
+    if (match.duplexMode === "TDD" && rangesAreSame(match.uplink, match.downlink)) {
+      return "UL/DL";
+    }
+
+    if (inDownlink && !inUplink) {
+      return "DL";
+    }
+
+    if (inUplink && !inDownlink) {
+      return "UL";
+    }
+
+    if (inUplink && inDownlink) {
+      return match.duplexMode === "TDD" ? "UL/DL" : "UL/DL";
+    }
+
+    if (match.duplexMode === "TDD") {
+      return "UL/DL";
+    }
+
+    return match.downlink ? "DL" : "UL";
+  }
+
   function createChip(text) {
     return createElement("span", "band-result-chip band-result-chip-" + String(text).toLowerCase(), text);
   }
@@ -642,7 +669,9 @@
 
   function createBandVisualRow(match, bounds, frequency) {
     var row = createElement("div", "band-visual-row");
+    var bandHeader = createElement("div", "band-visual-header");
     var band = createElement("strong", "band-visual-name", match.band);
+    var statusTag;
     var chartGroup = createElement("div", "band-visual-chart");
     var chart = createElement("div", "band-range-track");
     var chips = createElement("div", "band-result-chips");
@@ -661,26 +690,34 @@
     );
 
     if (typeof match.closestDistance === "number" && match.closestDistance > 0) {
-      chips.appendChild(createChip("Closest"));
+      statusTag = createChip("Closest");
+      statusTag.classList.add("band-visual-closest-tag");
+      bandHeader.append(band, statusTag);
       row.className += " band-visual-row-closest";
+    } else {
+      var duplexLabel = getBandFrequencySideLabel(match, frequency);
+      statusTag = createChip(duplexLabel);
+      statusTag.classList.add("band-visual-duplex-tag");
+      statusTag.classList.add("band-visual-duplex-tag-" + duplexLabel.toLowerCase().replace("/", ""));
+      bandHeader.append(band, statusTag);
     }
 
-    row.append(band, chartGroup, chips);
+    row.append(bandHeader, chartGroup, chips);
 
     return row;
   }
 
   function getClosestBandCopy(matches) {
     var distanceText = formatResult(matches[0].closestDistance) + " MHz away";
-    var details = matches.map(function (match) {
-      return match.band + " " + match.closestLabel + " edge at " + formatResult(match.closestFrequency) + " MHz";
+    var bands = matches.map(function (match) {
+      return match.band;
     });
 
     if (matches.length === 1) {
-      return "Closest band: " + details[0] + " (" + distanceText + ").";
+      return "Closest band: " + bands[0] + " (" + distanceText + ").";
     }
 
-    return "Closest bands: " + details.join(", ") + " (" + distanceText + ").";
+    return "Closest bands: " + bands.join(", ") + " (" + distanceText + ").";
   }
 
   function createBandVisualAxis(bounds, frequency) {
@@ -820,7 +857,7 @@
         bounds = getBandChartBounds(closestMatches, frequency);
         bandResultsState.classList.add("is-no-exact");
         bandResultsState.textContent = "No exact band";
-        bandResultsCopy.textContent = "No 5G NR band covers " + frequencyText + " MHz. " + getClosestBandCopy(closestMatches);
+        bandResultsCopy.textContent = "No 5G NR band at " + frequencyText + " MHz. " + getClosestBandCopy(closestMatches);
         renderBandRows(bandResultList, [
           createBandVisual(closestMatches, frequency, bounds)
         ]);
@@ -830,7 +867,9 @@
       bounds = getBandChartBounds(matches, frequency);
       bandResultsState.classList.remove("is-no-exact");
       bandResultsState.textContent = matches.length === 1 ? "1 band" : matches.length + " possible bands";
-      bandResultsCopy.textContent = "Matches for " + frequencyText + " MHz across " + formatResult(bounds.min) + "-" + formatResult(bounds.max) + " MHz.";
+      bandResultsCopy.textContent = "Bands at " + frequencyText + " MHz: " + matches.map(function (match) {
+        return match.band;
+      }).join(", ") + ".";
       renderBandRows(bandResultList, [
         createBandVisual(matches, frequency, bounds)
       ]);
