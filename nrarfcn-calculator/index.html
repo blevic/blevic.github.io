@@ -12,14 +12,6 @@ body_class: nrarfcn-body
 
   <form class="nrarfcn-calculator" id="nrarfcn-calculator">
     <div class="converter-grid">
-      <label class="converter-panel is-active" data-panel="nrarfcn" for="nrarfcn-input">
-        <span class="field-label">NR-ARFCN</span>
-        <input id="nrarfcn-input" name="nrarfcn" type="number" inputmode="numeric" min="0" step="1" placeholder="381000" autocomplete="off">
-        <span class="field-hint">Channel number</span>
-      </label>
-
-      <div class="converter-bridge" aria-hidden="true">to/from</div>
-
       <label class="converter-panel" data-panel="frequency" for="frequency-input">
         <span class="field-label">Frequency</span>
         <span class="input-with-unit">
@@ -28,12 +20,20 @@ body_class: nrarfcn-body
         </span>
         <span class="field-hint">Center frequency</span>
       </label>
+
+      <div class="converter-middle" aria-hidden="true">
+        <span class="converter-arrow" aria-hidden="true">⇆</span>
+        <button class="ghost-button ghost-button-small" id="clear-calculator" type="button">Clear</button>
+      </div>
+
+      <label class="converter-panel is-active" data-panel="nrarfcn" for="nrarfcn-input">
+        <span class="field-label">NR-ARFCN</span>
+        <input id="nrarfcn-input" name="nrarfcn" type="number" inputmode="numeric" min="0" step="1" placeholder="381000" autocomplete="off">
+        <span class="field-hint">Channel number</span>
+      </label>
     </div>
 
-    <div class="calculator-actions">
-      <p class="calculator-status" id="calculator-status" role="status">Type in either box to preview the flow.</p>
-      <button class="ghost-button" id="clear-calculator" type="button">Clear</button>
-    </div>
+  <p class="calculator-status" id="calculator-status" role="status">Type in either box to preview the flow.</p>
   </form>
 
   <section class="band-results" aria-labelledby="band-results-title">
@@ -61,13 +61,11 @@ body_class: nrarfcn-body
     </div>
   </section>
 
-  <div class="mock-note">
-    <strong>Calculator status:</strong> Both directions use 3GPP TS 38.104 Table 5.4.2.1-1.
-  </div>
-
   <figure class="tool-image">
     <img src="{{ '/assets/images/drahtlose-telephonie.jpg' | relative_url }}" alt="Historic wireless telephony illustration" loading="lazy">
   </figure>
+
+  <p class="calculator-references">References: 3GPP TS 38.104 Table 5.4.2.1-1, Tables 5.2-1 and 5.2-2.</p>
 </section>
 
 <script src="{{ '/assets/js/nrarfcn-calculator.js' | relative_url }}"></script>

@@ -864,11 +864,11 @@
         if (source === "nrarfcn") {
           var frequency = getFrequency(value);
           targetInput.value = formatResult(frequency);
-          status.textContent = "Calculated from 3GPP TS 38.104 Table 5.4.2.1-1.";
+          status.textContent = "Frequency updated.";
           renderBandResults(frequency);
         } else {
           targetInput.value = String(getNrarfcn(value));
-          status.textContent = "Calculated from 3GPP TS 38.104 Table 5.4.2.1-1.";
+          status.textContent = "NR-ARFCN updated.";
           renderBandResults(value);
         }
       } catch (error) {

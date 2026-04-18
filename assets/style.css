@@ -195,25 +195,19 @@ pre code{
   pointer-events: none;
 }
 
-.converter-bridge {
-  align-self: center;
-  justify-self: center;
-  min-width: 72px;
-  padding: 8px 10px;
-  color: var(--accent2);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  text-align: center;
-  font-size: 0.82rem;
-  font-weight: 700;
+.converter-middle {
+  display: grid;
+  gap: 12px;
+  align-content: end;
+  justify-items: center;
+  min-width: 84px;
 }
 
-.calculator-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 16px;
+.converter-arrow {
+  color: var(--accent2);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .calculator-status {
@@ -236,6 +230,20 @@ pre code{
 .ghost-button:focus {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.ghost-button-small {
+  min-height: 34px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.calculator-references {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .band-results {
@@ -317,9 +325,9 @@ pre code{
 }
 
 .band-result-chip-closest {
-  color: #6f5d1f;
-  background: #f8f2d8;
-  border-color: #ddd08f;
+  color: #5f6b73;
+  background: #edf1f4;
+  border-color: #c9d3db;
 }
 
 .band-results-copy {
@@ -476,8 +484,8 @@ pre code{
 }
 
 .band-visual-row-closest {
-  background: rgba(248, 242, 216, 0.28);
-  border-color: rgba(191, 174, 99, 0.58);
+  background: rgba(236, 241, 244, 0.74);
+  border-color: rgba(196, 207, 215, 0.92);
 }
 
 .band-visual-name {
@@ -531,6 +539,10 @@ pre code{
 
 .band-range-segment-compact .band-range-segment-label {
   display: none;
+}
+
+.band-range-segment-compact {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .band-range-segment-label {
@@ -627,16 +639,6 @@ pre code{
   clip: rect(0, 0, 0, 0);
 }
 
-.mock-note {
-  margin-top: 18px;
-  padding: 14px 16px;
-  color: #d7e3ee;
-  background: #121922;
-  border: 1px solid #2d3f4d;
-  border-left: 4px solid #d5d17b;
-  border-radius: 8px;
-}
-
 .tool-image {
   margin: 26px 0 0;
 }
@@ -646,6 +648,7 @@ pre code{
   width: 100%;
   max-height: 220px;
   object-fit: cover;
+  object-position: center 70%;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -722,10 +725,8 @@ body.nrarfcn-body {
   border-color: var(--accent2);
 }
 
-.nrarfcn-body .converter-bridge {
-  color: #0a6e87;
-  background: #ffffff;
-  border-color: #cbd7df;
+.nrarfcn-body .converter-middle {
+  justify-self: center;
 }
 
 .nrarfcn-body .ghost-button {
@@ -738,6 +739,10 @@ body.nrarfcn-body {
 .nrarfcn-body .ghost-button:focus {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.nrarfcn-body .ghost-button-small {
+  background: #ffffff;
 }
 
 .nrarfcn-body .band-results-state,
@@ -784,9 +789,9 @@ body.nrarfcn-body {
 }
 
 .nrarfcn-body .band-result-chip-closest {
-  color: #6f5d1f;
-  background: #f8f2d8;
-  border-color: #ddd08f;
+  color: #5f6b73;
+  background: #edf1f4;
+  border-color: #c9d3db;
 }
 
 .nrarfcn-body .band-result-row {
@@ -816,15 +821,13 @@ body.nrarfcn-body {
   background: linear-gradient(to bottom, #347ec5 0 50%, #15936c 50% 100%);
 }
 
-.nrarfcn-body .mock-note {
-  color: #243845;
-  background: #f3f9fb;
-  border-color: #b7d7df;
-  border-left-color: #0f8f74;
+.nrarfcn-body .band-range-segment-compact {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .nrarfcn-body .tool-image img {
   border-color: #cbd7df;
+  object-position: center top;
 }
 
 @media (max-width:760px) {
@@ -832,17 +835,16 @@ body.nrarfcn-body {
     grid-template-columns: 1fr;
   }
 
-  .converter-bridge {
+  .converter-middle {
     width: 100%;
-  }
-
-  .calculator-actions {
-    align-items: stretch;
-    flex-direction: column;
   }
 
   .ghost-button {
     width: 100%;
+  }
+
+  .ghost-button-small {
+    width: auto;
   }
 
   .band-results-heading,
