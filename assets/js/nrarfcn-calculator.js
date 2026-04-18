@@ -294,7 +294,7 @@
   }
 
   function createChip(text) {
-    return createElement("span", "band-result-chip", text);
+    return createElement("span", "band-result-chip band-result-chip-" + String(text).toLowerCase(), text);
   }
 
   function createMessageRow(label, title, body, chipText) {
@@ -428,7 +428,7 @@
     legend.append(
       createElement("span", "band-range-legend-item band-range-legend-ul", "UL"),
       createElement("span", "band-range-legend-item band-range-legend-dl", "DL"),
-      createElement("span", "band-range-legend-item band-range-legend-tdd", "UL/DL")
+      createElement("span", "band-range-legend-item band-range-legend-tdd", "TDD")
     );
 
     return legend;

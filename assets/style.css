@@ -280,6 +280,42 @@ pre code{
   font-weight: 700;
 }
 
+.band-result-chip-fdd {
+  color: #60438a;
+  background: #eee5fb;
+  border-color: #cdb8eb;
+}
+
+.band-result-chip-tdd {
+  color: #1f6671;
+  background: #dff4f6;
+  border-color: #a4d6dc;
+}
+
+.band-result-chip-sul {
+  color: #1f5f9b;
+  background: #e1efff;
+  border-color: #9dc4ee;
+}
+
+.band-result-chip-sdl {
+  color: #167050;
+  background: #def7eb;
+  border-color: #98d9bd;
+}
+
+.band-result-chip-fr1 {
+  color: #4b566f;
+  background: #e8edf7;
+  border-color: #bac7df;
+}
+
+.band-result-chip-fr2 {
+  color: #6a4c74;
+  background: #f3e5f7;
+  border-color: #d6b7df;
+}
+
 .band-results-copy {
   max-width: 680px;
   margin: 12px 0 0;
@@ -350,7 +386,7 @@ pre code{
 
 .band-range-axis {
   position: relative;
-  height: 28px;
+  height: 42px;
   margin: 0 118px 0 66px;
   color: var(--muted);
   font-size: 0.82rem;
@@ -374,6 +410,16 @@ pre code{
 .band-range-axis-target {
   color: var(--accent);
   transform: translateX(-50%);
+}
+
+.band-range-axis .band-range-axis-target {
+  top: -7px;
+  bottom: auto;
+  padding: 2px 7px;
+  background: #ffffff;
+  border: 1px solid #cbd7df;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(23, 33, 43, 0.08);
 }
 
 .band-range-legend {
@@ -408,7 +454,7 @@ pre code{
 }
 
 .band-range-legend-tdd::before {
-  background: linear-gradient(135deg, #4f8fd9 0 50%, #24a879 50% 100%);
+  background: linear-gradient(to bottom, #4f8fd9 0 50%, #24a879 50% 100%);
 }
 
 .band-visual-row {
@@ -471,8 +517,7 @@ pre code{
 }
 
 .band-range-segment-tdd {
-  color: #17313a;
-  background: linear-gradient(135deg, rgba(79, 143, 217, 0.95) 0 50%, rgba(36, 168, 121, 0.95) 50% 100%);
+  background: linear-gradient(to bottom, #4f8fd9 0 50%, #24a879 50% 100%);
 }
 
 .band-target-marker {
@@ -627,6 +672,42 @@ body.nrarfcn-body {
   border-color: #b9d6de;
 }
 
+.nrarfcn-body .band-result-chip-fdd {
+  color: #60438a;
+  background: #eee5fb;
+  border-color: #cdb8eb;
+}
+
+.nrarfcn-body .band-result-chip-tdd {
+  color: #1f6671;
+  background: #dff4f6;
+  border-color: #a4d6dc;
+}
+
+.nrarfcn-body .band-result-chip-sul {
+  color: #1f5f9b;
+  background: #e1efff;
+  border-color: #9dc4ee;
+}
+
+.nrarfcn-body .band-result-chip-sdl {
+  color: #167050;
+  background: #def7eb;
+  border-color: #98d9bd;
+}
+
+.nrarfcn-body .band-result-chip-fr1 {
+  color: #4b566f;
+  background: #e8edf7;
+  border-color: #bac7df;
+}
+
+.nrarfcn-body .band-result-chip-fr2 {
+  color: #6a4c74;
+  background: #f3e5f7;
+  border-color: #d6b7df;
+}
+
 .nrarfcn-body .band-result-row {
   background: #f7fafc;
   border-color: #d3dee5;
@@ -651,7 +732,7 @@ body.nrarfcn-body {
 
 .nrarfcn-body .band-range-segment-tdd {
   color: #ffffff;
-  background: linear-gradient(135deg, #347ec5 0 50%, #15936c 50% 100%);
+  background: linear-gradient(to bottom, #347ec5 0 50%, #15936c 50% 100%);
 }
 
 .nrarfcn-body .mock-note {
