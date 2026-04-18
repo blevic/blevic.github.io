@@ -275,18 +275,6 @@
     return formatResult(range.low) + "-" + formatResult(range.high) + " MHz";
   }
 
-  function getMatchLabel(match) {
-    if (match.matchesUplink && match.matchesDownlink) {
-      return "Matches uplink and downlink";
-    }
-
-    if (match.matchesUplink) {
-      return "Matches uplink";
-    }
-
-    return "Matches downlink";
-  }
-
   function getBandDetailText(match) {
     var uplinkText = getRangeText(match.uplink);
     var downlinkText = getRangeText(match.downlink);
@@ -296,6 +284,13 @@
     }
 
     return "UL " + uplinkText + " | DL " + downlinkText;
+  }
+
+  function rangesAreSame(firstRange, secondRange) {
+    return firstRange &&
+      secondRange &&
+      firstRange.low === secondRange.low &&
+      firstRange.high === secondRange.high;
   }
 
   function createChip(text) {
@@ -317,25 +312,141 @@
     return row;
   }
 
-  function createBandRow(match) {
-    var row = createElement("div", "band-result-row");
-    var main = createElement("div", "band-result-main");
+  function getBandChartBounds(matches, frequency) {
+    var lows = [frequency];
+    var highs = [frequency];
+
+    matches.forEach(function (match) {
+      [match.uplink, match.downlink].forEach(function (range) {
+        if (range) {
+          lows.push(range.low);
+          highs.push(range.high);
+        }
+      });
+    });
+
+    return {
+      min: Math.min.apply(Math, lows),
+      max: Math.max.apply(Math, highs)
+    };
+  }
+
+  function getRangePercent(value, bounds) {
+    var span = bounds.max - bounds.min;
+
+    if (span <= 0) {
+      return 0;
+    }
+
+    return Math.max(0, Math.min(100, ((value - bounds.min) / span) * 100));
+  }
+
+  function createBandSegment(kind, range, bounds, label) {
+    var segment = createElement("span", "band-range-segment band-range-segment-" + kind, label);
+    var left = getRangePercent(range.low, bounds);
+    var right = getRangePercent(range.high, bounds);
+    var width = Math.max(right - left, 0.8);
+
+    if (left + width > 100) {
+      left = 100 - width;
+    }
+
+    segment.style.left = left + "%";
+    segment.style.width = width + "%";
+    segment.title = label + " " + getRangeText(range);
+
+    return segment;
+  }
+
+  function createTargetMarker(frequency, bounds) {
+    var marker = createElement("span", "band-target-marker");
+    var markerLabel = createElement("span", "band-target-marker-label", formatResult(frequency));
+
+    marker.style.left = getRangePercent(frequency, bounds) + "%";
+    marker.appendChild(markerLabel);
+
+    return marker;
+  }
+
+  function createBandSegments(match, bounds) {
+    var fragment = document.createDocumentFragment();
+
+    if (match.duplexMode === "TDD" && rangesAreSame(match.uplink, match.downlink)) {
+      fragment.appendChild(createBandSegment("tdd", match.uplink, bounds, "UL/DL"));
+      return fragment;
+    }
+
+    if (match.uplink) {
+      fragment.appendChild(createBandSegment("ul", match.uplink, bounds, "UL"));
+    }
+
+    if (match.downlink) {
+      fragment.appendChild(createBandSegment("dl", match.downlink, bounds, "DL"));
+    }
+
+    return fragment;
+  }
+
+  function createBandVisualRow(match, bounds, frequency) {
+    var row = createElement("div", "band-visual-row");
+    var band = createElement("strong", "band-visual-name", match.band);
+    var chart = createElement("div", "band-range-track");
     var chips = createElement("div", "band-result-chips");
 
-    main.append(
-      createElement("span", "band-result-label", getMatchLabel(match)),
-      createElement("strong", "", match.band),
-      createElement("p", "", getBandDetailText(match))
+    chart.append(
+      createBandSegments(match, bounds),
+      createTargetMarker(frequency, bounds)
     );
+
+    chart.setAttribute("aria-label", match.band + ": " + getBandDetailText(match));
 
     chips.append(
       createChip(match.duplexMode),
       createChip(match.frequencyRange)
     );
 
-    row.append(main, chips);
+    row.append(band, chart, chips);
 
     return row;
+  }
+
+  function createBandVisualAxis(bounds, frequency) {
+    var axis = createElement("div", "band-range-axis");
+    var start = createElement("span", "", formatResult(bounds.min) + " MHz");
+    var target = createElement("span", "band-range-axis-target", formatResult(frequency) + " MHz");
+    var end = createElement("span", "", formatResult(bounds.max) + " MHz");
+
+    target.style.left = getRangePercent(frequency, bounds) + "%";
+    axis.append(start, target, end);
+
+    return axis;
+  }
+
+  function createBandLegend() {
+    var legend = createElement("div", "band-range-legend");
+
+    legend.append(
+      createElement("span", "band-range-legend-item band-range-legend-ul", "UL"),
+      createElement("span", "band-range-legend-item band-range-legend-dl", "DL"),
+      createElement("span", "band-range-legend-item band-range-legend-tdd", "UL/DL")
+    );
+
+    return legend;
+  }
+
+  function createBandVisual(matches, frequency, bounds) {
+    var visual = createElement("div", "band-range-visual");
+
+    visual.append(
+      createBandVisualAxis(bounds, frequency),
+      createBandLegend()
+    );
+
+    matches.forEach(function (match) {
+      visual.appendChild(createBandVisualRow(match, bounds, frequency));
+    });
+
+    return visual;
   }
 
   function renderBandRows(list, rows) {
@@ -403,6 +514,7 @@
     function renderBandResults(frequency) {
       var matches;
       var frequencyText = formatResult(frequency);
+      var bounds;
 
       if (!bandResultsState || !bandResultsCopy || !bandResultList) {
         return;
@@ -424,9 +536,12 @@
         return;
       }
 
+      bounds = getBandChartBounds(matches, frequency);
       bandResultsState.textContent = matches.length === 1 ? "1 band" : matches.length + " possible bands";
-      bandResultsCopy.textContent = "Matches for " + frequencyText + " MHz, using 3GPP TS 38.104 V19.4.0 Tables 5.2-1 and 5.2-2.";
-      renderBandRows(bandResultList, matches.map(createBandRow));
+      bandResultsCopy.textContent = "Matches for " + frequencyText + " MHz across " + formatResult(bounds.min) + "-" + formatResult(bounds.max) + " MHz.";
+      renderBandRows(bandResultList, [
+        createBandVisual(matches, frequency, bounds)
+      ]);
     }
 
     function setActivePanel(source) {
