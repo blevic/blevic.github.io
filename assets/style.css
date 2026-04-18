@@ -325,9 +325,9 @@ pre code{
 }
 
 .band-result-chip-closest {
-  color: #5f6b73;
-  background: #edf1f4;
-  border-color: #c9d3db;
+  color: #48525b;
+  background: #dde4ea;
+  border-color: #b5c2cc;
 }
 
 .band-results-copy {
@@ -789,9 +789,21 @@ body.nrarfcn-body {
 }
 
 .nrarfcn-body .band-result-chip-closest {
-  color: #5f6b73;
-  background: #edf1f4;
-  border-color: #c9d3db;
+  color: #48525b;
+  background: #dde4ea;
+  border-color: #b5c2cc;
+}
+
+.band-results-state.is-no-exact {
+  color: #a33a3a;
+  background: #fdecec;
+  border-color: #e1aaaa;
+}
+
+.nrarfcn-body .band-results-state.is-no-exact {
+  color: #a33a3a;
+  background: #fdecec;
+  border-color: #e1aaaa;
 }
 
 .nrarfcn-body .band-result-row {

@@ -757,6 +757,7 @@
         return;
       }
 
+      bandResultsState.classList.remove("is-no-exact");
       bandResultsState.textContent = "Waiting for input";
       bandResultsCopy.textContent = "Enter a frequency or NR-ARFCN to see applicable NR operating bands.";
       renderBandRows(bandResultList, [
@@ -774,6 +775,7 @@
         return;
       }
 
+      bandResultsState.classList.remove("is-no-exact");
       bandResultsState.textContent = "No lookup";
       bandResultsCopy.textContent = "Band lookup needs a valid frequency or NR-ARFCN.";
       renderBandRows(bandResultList, [
@@ -816,8 +818,9 @@
         }
 
         bounds = getBandChartBounds(closestMatches, frequency);
+        bandResultsState.classList.add("is-no-exact");
         bandResultsState.textContent = "No exact band";
-        bandResultsCopy.textContent = "No defined 3GPP NR band includes " + frequencyText + " MHz. " + getClosestBandCopy(closestMatches);
+        bandResultsCopy.textContent = "No 5G NR band covers " + frequencyText + " MHz. " + getClosestBandCopy(closestMatches);
         renderBandRows(bandResultList, [
           createBandVisual(closestMatches, frequency, bounds)
         ]);
@@ -825,6 +828,7 @@
       }
 
       bounds = getBandChartBounds(matches, frequency);
+      bandResultsState.classList.remove("is-no-exact");
       bandResultsState.textContent = matches.length === 1 ? "1 band" : matches.length + " possible bands";
       bandResultsCopy.textContent = "Matches for " + frequencyText + " MHz across " + formatResult(bounds.min) + "-" + formatResult(bounds.max) + " MHz.";
       renderBandRows(bandResultList, [
@@ -847,7 +851,7 @@
 
       if (rawValue === "") {
         targetInput.value = "";
-        status.textContent = "Type in either box to preview the flow.";
+        status.textContent = "Type in either box to get started.";
         renderBandIdle();
         return;
       }
@@ -898,7 +902,8 @@
       nrarfcnInput.value = "";
       frequencyInput.value = "";
       setActivePanel("nrarfcn");
-      status.textContent = "Type in either box to preview the flow.";
+      bandResultsState.classList.remove("is-no-exact");
+      status.textContent = "Type in either box to get started.";
       renderBandIdle();
       nrarfcnInput.focus();
     });
