@@ -428,6 +428,33 @@
       firstRange.high === secondRange.high;
   }
 
+  function getBandFrequencySideLabel(match, frequency) {
+    var inUplink = !!(match.uplink && frequencyIsInRange(frequency, match.uplink.low, match.uplink.high));
+    var inDownlink = !!(match.downlink && frequencyIsInRange(frequency, match.downlink.low, match.downlink.high));
+
+    if (match.duplexMode === "TDD" && rangesAreSame(match.uplink, match.downlink)) {
+      return "UL/DL";
+    }
+
+    if (inDownlink && !inUplink) {
+      return "DL";
+    }
+
+    if (inUplink && !inDownlink) {
+      return "UL";
+    }
+
+    if (inUplink && inDownlink) {
+      return match.duplexMode === "TDD" ? "UL/DL" : "UL/DL";
+    }
+
+    if (match.duplexMode === "TDD") {
+      return "UL/DL";
+    }
+
+    return match.downlink ? "DL" : "UL";
+  }
+
   function createChip(text) {
     return createElement("span", "band-result-chip band-result-chip-" + String(text).toLowerCase(), text);
   }
@@ -644,7 +671,7 @@
     var row = createElement("div", "band-visual-row");
     var bandHeader = createElement("div", "band-visual-header");
     var band = createElement("strong", "band-visual-name", match.band);
-    var closestTag;
+    var statusTag;
     var chartGroup = createElement("div", "band-visual-chart");
     var chart = createElement("div", "band-range-track");
     var chips = createElement("div", "band-result-chips");
@@ -663,12 +690,16 @@
     );
 
     if (typeof match.closestDistance === "number" && match.closestDistance > 0) {
-      closestTag = createChip("Closest");
-      closestTag.classList.add("band-visual-closest-tag");
-      bandHeader.append(band, closestTag);
+      statusTag = createChip("Closest");
+      statusTag.classList.add("band-visual-closest-tag");
+      bandHeader.append(band, statusTag);
       row.className += " band-visual-row-closest";
     } else {
-      bandHeader.appendChild(band);
+      var duplexLabel = getBandFrequencySideLabel(match, frequency);
+      statusTag = createChip(duplexLabel);
+      statusTag.classList.add("band-visual-duplex-tag");
+      statusTag.classList.add("band-visual-duplex-tag-" + duplexLabel.toLowerCase().replace("/", ""));
+      bandHeader.append(band, statusTag);
     }
 
     row.append(bandHeader, chartGroup, chips);

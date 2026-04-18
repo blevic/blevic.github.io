@@ -125,7 +125,7 @@ pre code{
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   gap: 14px;
-  align-items: stretch;
+  align-items: center;
 }
 
 .converter-panel {
@@ -196,16 +196,19 @@ pre code{
 }
 
 .converter-middle {
-  display: grid;
-  gap: 12px;
-  align-content: end;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   min-width: 84px;
+  align-self: center;
+  justify-self: center;
 }
 
 .converter-arrow {
   color: var(--accent2);
-  font-size: 1.7rem;
+  font-size: 2.95rem;
   font-weight: 700;
   line-height: 1;
 }
@@ -233,9 +236,9 @@ pre code{
 }
 
 .ghost-button-small {
-  min-height: 34px;
-  padding: 6px 12px;
-  font-size: 0.9rem;
+  min-height: 24px;
+  padding: 3px 9px;
+  font-size: 0.78rem;
 }
 
 .calculator-references {
@@ -325,9 +328,9 @@ pre code{
 }
 
 .band-result-chip-closest {
-  color: #48525b;
-  background: #dde4ea;
-  border-color: #b5c2cc;
+  color: #9b3535;
+  background: #fde7e7;
+  border-color: #e3a8a8;
 }
 
 .band-results-copy {
@@ -361,9 +364,10 @@ pre code{
 .band-result-chips {
   display: flex;
   flex: 0 0 auto;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  width: var(--band-chip-col, auto);
 }
 
 .band-result-row-empty {
@@ -394,6 +398,10 @@ pre code{
 }
 
 .band-range-visual {
+  --band-row-padding: 12px;
+  --band-name-col: 54px;
+  --band-chip-col: 66px;
+  --band-row-gap: 12px;
   display: grid;
   gap: 12px;
 }
@@ -401,7 +409,7 @@ pre code{
 .band-range-axis {
   position: relative;
   height: 42px;
-  margin: 0 130px 0 78px;
+  margin: 0 calc(var(--band-row-padding) + var(--band-chip-col) + var(--band-row-gap)) 0 calc(var(--band-row-padding) + var(--band-name-col) + var(--band-row-gap));
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 700;
@@ -473,19 +481,19 @@ pre code{
 
 .band-visual-row {
   display: grid;
-  grid-template-columns: 54px minmax(0, 1fr) auto;
-  gap: 12px;
+  grid-template-columns: var(--band-name-col) minmax(0, 1fr) var(--band-chip-col);
+  gap: var(--band-row-gap);
   align-items: center;
   min-width: 0;
-  padding: 12px;
+  padding: var(--band-row-padding);
   background: rgba(239, 245, 248, 0.58);
   border: 1px solid rgba(203, 215, 223, 0.82);
   border-radius: 8px;
 }
 
 .band-visual-row-closest {
-  background: rgba(236, 241, 244, 0.74);
-  border-color: rgba(196, 207, 215, 0.92);
+  background: rgba(251, 242, 242, 0.8);
+  border-color: rgba(216, 183, 183, 0.95);
 }
 
 .band-visual-header {
@@ -509,6 +517,33 @@ pre code{
   color: #a33a3a;
   background: #fdecec;
   border: 1px solid #e1aaaa;
+}
+
+.band-visual-duplex-tag {
+  justify-self: center;
+  padding: 3px 9px;
+  font-size: 0.72rem;
+  color: #4f5d68;
+  background: #eef3f6;
+  border: 1px solid #c8d4dc;
+}
+
+.band-visual-duplex-tag-ul {
+  color: #1f5f9b;
+  background: #e1efff;
+  border-color: #9dc4ee;
+}
+
+.band-visual-duplex-tag-dl {
+  color: #167050;
+  background: #def7eb;
+  border-color: #98d9bd;
+}
+
+.band-visual-duplex-tag-uldl {
+  color: #1f6671;
+  background: #dff4f6;
+  border-color: #a4d6dc;
 }
 
 .band-visual-chart {
@@ -806,15 +841,44 @@ body.nrarfcn-body {
 }
 
 .nrarfcn-body .band-result-chip-closest {
-  color: #48525b;
-  background: #dde4ea;
-  border-color: #b5c2cc;
+  color: #9b3535;
+  background: #fde7e7;
+  border-color: #e3a8a8;
+}
+
+.nrarfcn-body .band-visual-duplex-tag {
+  color: #4f5d68;
+  background: #eef3f6;
+  border-color: #c8d4dc;
+}
+
+.nrarfcn-body .band-visual-duplex-tag-ul {
+  color: #1f5f9b;
+  background: #e1efff;
+  border-color: #9dc4ee;
+}
+
+.nrarfcn-body .band-visual-duplex-tag-dl {
+  color: #167050;
+  background: #def7eb;
+  border-color: #98d9bd;
+}
+
+.nrarfcn-body .band-visual-duplex-tag-uldl {
+  color: #1f6671;
+  background: #dff4f6;
+  border-color: #a4d6dc;
 }
 
 .nrarfcn-body .band-visual-closest-tag {
   color: #a33a3a;
   background: #fdecec;
   border-color: #e1aaaa;
+}
+
+.nrarfcn-body .band-visual-row-closest {
+  background: #fbf2f2;
+  border-color: #d8b7b7;
 }
 
 .band-results-state.is-no-exact {
@@ -873,6 +937,13 @@ body.nrarfcn-body {
 
   .converter-middle {
     width: 100%;
+    min-width: 0;
+    align-self: stretch;
+    justify-self: stretch;
+  }
+
+  .converter-arrow {
+    margin: 0 auto;
   }
 
   .ghost-button {
@@ -896,10 +967,11 @@ body.nrarfcn-body {
 
   .band-result-chips {
     justify-content: flex-start;
+    width: auto;
   }
 
   .band-range-axis {
-    margin: 0 0 0 0;
+    margin: 0;
   }
 
   .band-range-legend {
