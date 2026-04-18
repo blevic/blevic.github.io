@@ -1,0 +1,70 @@
+---
+layout: default
+title: NR-ARFCN Calculator
+description: Convert between NR-ARFCN and frequency in MHz.
+permalink: /nrarfcn-calculator/
+body_class: nrarfcn-body
+---
+<section class="tool-page nrarfcn-page" aria-labelledby="nrarfcn-title">
+  <h1 id="nrarfcn-title">NR-ARFCN Calculator</h1>
+  <p class="tool-lede">Convert between frequency in MHz and NR-ARFCN values.</p>
+
+  <form class="nrarfcn-calculator" id="nrarfcn-calculator">
+    <div class="converter-grid">
+      <label class="converter-panel" data-panel="frequency" for="frequency-input">
+        <span class="field-label">Frequency</span>
+        <span class="input-with-unit">
+          <input id="frequency-input" name="frequency" type="number" inputmode="decimal" min="0" step="1" placeholder="1905" autocomplete="off">
+          <span class="unit-label">MHz</span>
+        </span>
+        <span class="field-hint">Center frequency</span>
+      </label>
+
+      <div class="converter-middle" aria-hidden="true">
+        <span class="converter-arrow" aria-hidden="true">⇆</span>
+        <button class="ghost-button ghost-button-small" id="clear-calculator" type="button">Clear</button>
+      </div>
+
+      <label class="converter-panel is-active" data-panel="nrarfcn" for="nrarfcn-input">
+        <span class="field-label">NR-ARFCN</span>
+        <input id="nrarfcn-input" name="nrarfcn" type="number" inputmode="numeric" min="0" step="1" placeholder="381000" autocomplete="off">
+        <span class="field-hint">Channel number</span>
+      </label>
+    </div>
+
+  <p class="calculator-status" id="calculator-status" role="status">Type in either box to get started.</p>
+  </form>
+
+  <section class="band-results" aria-labelledby="band-results-title">
+    <div class="band-results-heading">
+      <div>
+        <p class="band-results-eyebrow">Band lookup</p>
+        <h2 id="band-results-title">Matching 3GPP bands</h2>
+      </div>
+      <span class="band-results-state" id="band-results-state">Waiting for input</span>
+    </div>
+
+    <p class="band-results-copy" id="band-results-copy">
+      Enter a frequency or NR-ARFCN to see applicable NR operating bands.
+    </p>
+
+    <div class="band-result-states" id="band-result-list" aria-live="polite" aria-label="Applicable band matches">
+      <div class="band-result-row band-result-row-empty">
+        <div>
+          <span class="band-result-label">Ready</span>
+          <strong>No value entered yet</strong>
+          <p>The matching bands will appear here after a valid input.</p>
+        </div>
+        <span class="band-result-chip">3GPP Rel 19</span>
+      </div>
+    </div>
+  </section>
+
+  <figure class="tool-image">
+    <img src="{{ '/assets/images/drahtlose-telephonie.jpg' | relative_url }}" alt="Historic wireless telephony illustration" loading="lazy">
+  </figure>
+
+  <p class="calculator-references">References: 3GPP TS 38.104 Table 5.4.2.1-1, Tables 5.2-1 and 5.2-2.</p>
+</section>
+
+<script src="{{ '/assets/js/nrarfcn-calculator.js' | relative_url }}"></script>
