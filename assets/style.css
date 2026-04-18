@@ -488,10 +488,27 @@ pre code{
   border-color: rgba(196, 207, 215, 0.92);
 }
 
+.band-visual-header {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  justify-items: center;
+}
+
 .band-visual-name {
   color: var(--text);
   font-size: 1rem;
   line-height: 1.2;
+  text-align: center;
+}
+
+.band-visual-closest-tag {
+  justify-self: start;
+  padding: 3px 9px;
+  font-size: 0.72rem;
+  color: #a33a3a;
+  background: #fdecec;
+  border: 1px solid #e1aaaa;
 }
 
 .band-visual-chart {
@@ -792,6 +809,12 @@ body.nrarfcn-body {
   color: #48525b;
   background: #dde4ea;
   border-color: #b5c2cc;
+}
+
+.nrarfcn-body .band-visual-closest-tag {
+  color: #a33a3a;
+  background: #fdecec;
+  border-color: #e1aaaa;
 }
 
 .band-results-state.is-no-exact {

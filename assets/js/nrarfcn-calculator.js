@@ -642,7 +642,9 @@
 
   function createBandVisualRow(match, bounds, frequency) {
     var row = createElement("div", "band-visual-row");
+    var bandHeader = createElement("div", "band-visual-header");
     var band = createElement("strong", "band-visual-name", match.band);
+    var closestTag;
     var chartGroup = createElement("div", "band-visual-chart");
     var chart = createElement("div", "band-range-track");
     var chips = createElement("div", "band-result-chips");
@@ -661,26 +663,30 @@
     );
 
     if (typeof match.closestDistance === "number" && match.closestDistance > 0) {
-      chips.appendChild(createChip("Closest"));
+      closestTag = createChip("Closest");
+      closestTag.classList.add("band-visual-closest-tag");
+      bandHeader.append(band, closestTag);
       row.className += " band-visual-row-closest";
+    } else {
+      bandHeader.appendChild(band);
     }
 
-    row.append(band, chartGroup, chips);
+    row.append(bandHeader, chartGroup, chips);
 
     return row;
   }
 
   function getClosestBandCopy(matches) {
     var distanceText = formatResult(matches[0].closestDistance) + " MHz away";
-    var details = matches.map(function (match) {
-      return match.band + " " + match.closestLabel + " edge at " + formatResult(match.closestFrequency) + " MHz";
+    var bands = matches.map(function (match) {
+      return match.band;
     });
 
     if (matches.length === 1) {
-      return "Closest band: " + details[0] + " (" + distanceText + ").";
+      return "Closest band: " + bands[0] + " (" + distanceText + ").";
     }
 
-    return "Closest bands: " + details.join(", ") + " (" + distanceText + ").";
+    return "Closest bands: " + bands.join(", ") + " (" + distanceText + ").";
   }
 
   function createBandVisualAxis(bounds, frequency) {
@@ -820,7 +826,7 @@
         bounds = getBandChartBounds(closestMatches, frequency);
         bandResultsState.classList.add("is-no-exact");
         bandResultsState.textContent = "No exact band";
-        bandResultsCopy.textContent = "No 5G NR band covers " + frequencyText + " MHz. " + getClosestBandCopy(closestMatches);
+        bandResultsCopy.textContent = "No 5G NR band at " + frequencyText + " MHz. " + getClosestBandCopy(closestMatches);
         renderBandRows(bandResultList, [
           createBandVisual(closestMatches, frequency, bounds)
         ]);
@@ -830,7 +836,9 @@
       bounds = getBandChartBounds(matches, frequency);
       bandResultsState.classList.remove("is-no-exact");
       bandResultsState.textContent = matches.length === 1 ? "1 band" : matches.length + " possible bands";
-      bandResultsCopy.textContent = "Matches for " + frequencyText + " MHz across " + formatResult(bounds.min) + "-" + formatResult(bounds.max) + " MHz.";
+      bandResultsCopy.textContent = "Bands at " + frequencyText + " MHz: " + matches.map(function (match) {
+        return match.band;
+      }).join(", ") + ".";
       renderBandRows(bandResultList, [
         createBandVisual(matches, frequency, bounds)
       ]);
