@@ -648,7 +648,7 @@ pre code{
   width: 100%;
   max-height: 220px;
   object-fit: cover;
-  object-position: center 70%;
+  object-position: center;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -827,7 +827,8 @@ body.nrarfcn-body {
 
 .nrarfcn-body .tool-image img {
   border-color: #cbd7df;
-  object-position: center top;
+  object-position: center 15%;
+  max-height: 300px;
 }
 
 @media (max-width:760px) {
