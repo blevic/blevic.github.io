@@ -465,6 +465,7 @@
   }
 
   function initCalculator() {
+    var defaultExampleFrequency = 1905;
     var nrarfcnInput = document.getElementById("nrarfcn-input");
     var frequencyInput = document.getElementById("frequency-input");
     var status = document.getElementById("calculator-status");
@@ -616,7 +617,8 @@
       nrarfcnInput.focus();
     });
 
-    renderBandIdle();
+    status.textContent = "Example shown for 1905 MHz. Type in either box to calculate your value.";
+    renderBandResults(defaultExampleFrequency);
   }
 
   window.NrarfcnCalculator = {
