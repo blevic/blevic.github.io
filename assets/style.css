@@ -316,6 +316,12 @@ pre code{
   border-color: #d6b7df;
 }
 
+.band-result-chip-closest {
+  color: #6f5d1f;
+  background: #f8f2d8;
+  border-color: #ddd08f;
+}
+
 .band-results-copy {
   max-width: 680px;
   margin: 12px 0 0;
@@ -467,6 +473,11 @@ pre code{
   background: rgba(239, 245, 248, 0.58);
   border: 1px solid rgba(203, 215, 223, 0.82);
   border-radius: 8px;
+}
+
+.band-visual-row-closest {
+  background: rgba(248, 242, 216, 0.28);
+  border-color: rgba(191, 174, 99, 0.58);
 }
 
 .band-visual-name {
@@ -770,6 +781,12 @@ body.nrarfcn-body {
   color: #6a4c74;
   background: #f3e5f7;
   border-color: #d6b7df;
+}
+
+.nrarfcn-body .band-result-chip-closest {
+  color: #6f5d1f;
+  background: #f8f2d8;
+  border-color: #ddd08f;
 }
 
 .nrarfcn-body .band-result-row {

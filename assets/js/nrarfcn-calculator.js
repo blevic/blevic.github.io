@@ -134,17 +134,11 @@
     };
   }
 
-  function getBandMatch(table, row, frequency) {
+  function getBandCandidate(table, row) {
     var ulLow = getTableCell(table, row, "f_ul_low");
     var ulHigh = getTableCell(table, row, "f_ul_high");
     var dlLow = getTableCell(table, row, "f_dl_low");
     var dlHigh = getTableCell(table, row, "f_dl_high");
-    var matchesUplink = frequencyIsInRange(frequency, ulLow, ulHigh);
-    var matchesDownlink = frequencyIsInRange(frequency, dlLow, dlHigh);
-
-    if (!matchesUplink && !matchesDownlink) {
-      return null;
-    }
 
     return {
       band: getTableCell(table, row, "band"),
@@ -152,8 +146,100 @@
       frequencyRange: table.id === "bands_fr2" ? "FR2" : "FR1",
       uplink: getFrequencyRange(ulLow, ulHigh),
       downlink: getFrequencyRange(dlLow, dlHigh),
-      matchesUplink: matchesUplink,
-      matchesDownlink: matchesDownlink
+      matchesUplink: false,
+      matchesDownlink: false
+    };
+  }
+
+  function getBandMatch(table, row, frequency) {
+    var candidate = getBandCandidate(table, row);
+    var matchesUplink = candidate.uplink && frequencyIsInRange(frequency, candidate.uplink.low, candidate.uplink.high);
+    var matchesDownlink = candidate.downlink && frequencyIsInRange(frequency, candidate.downlink.low, candidate.downlink.high);
+
+    if (!matchesUplink && !matchesDownlink) {
+      return null;
+    }
+
+    candidate.matchesUplink = matchesUplink;
+    candidate.matchesDownlink = matchesDownlink;
+
+    return candidate;
+  }
+
+  function getRangeDistance(frequency, range) {
+    if (!range) {
+      return null;
+    }
+
+    if (frequency < range.low) {
+      return {
+        distance: range.low - frequency,
+        closestFrequency: range.low
+      };
+    }
+
+    if (frequency > range.high) {
+      return {
+        distance: frequency - range.high,
+        closestFrequency: range.high
+      };
+    }
+
+    return {
+      distance: 0,
+      closestFrequency: frequency
+    };
+  }
+
+  function getClosestRangeInfo(candidate, frequency) {
+    var ranges = [];
+    var closest;
+
+    if (candidate.uplink && candidate.downlink && candidate.uplink.low === candidate.downlink.low && candidate.uplink.high === candidate.downlink.high) {
+      ranges.push({
+        label: "UL/DL",
+        info: getRangeDistance(frequency, candidate.uplink)
+      });
+    } else {
+      ranges.push({
+        label: "UL",
+        info: getRangeDistance(frequency, candidate.uplink)
+      });
+      ranges.push({
+        label: "DL",
+        info: getRangeDistance(frequency, candidate.downlink)
+      });
+    }
+
+    ranges.forEach(function (range) {
+      if (!range.info) {
+        return;
+      }
+
+      if (!closest || range.info.distance < closest.distance) {
+        closest = {
+          label: range.label,
+          distance: range.info.distance,
+          closestFrequency: range.info.closestFrequency
+        };
+      }
+    });
+
+    return closest;
+  }
+
+  function cloneClosestCandidate(candidate, closestInfo) {
+    return {
+      band: candidate.band,
+      duplexMode: candidate.duplexMode,
+      frequencyRange: candidate.frequencyRange,
+      uplink: candidate.uplink,
+      downlink: candidate.downlink,
+      matchesUplink: false,
+      matchesDownlink: false,
+      closestLabel: closestInfo.label,
+      closestDistance: closestInfo.distance,
+      closestFrequency: closestInfo.closestFrequency
     };
   }
 
@@ -181,6 +267,55 @@
     });
 
     return matches;
+  }
+
+  function getClosestBandMatchesByFrequency(frequencyMHz) {
+    var frequency = Number(frequencyMHz);
+    var matches = [];
+    var minDistance = Infinity;
+    var tables = [tableBandsFr1, tableBandsFr2];
+    var tolerance = 1e-9;
+
+    if (!Number.isFinite(frequency)) {
+      throw new Error("Frequency must be a number.");
+    }
+
+    if (frequency < 0 || frequency > 100000) {
+      throw new Error("Frequency must be between 0 and 100,000 MHz.");
+    }
+
+    tables.forEach(function (table) {
+      table.rows.forEach(function (row) {
+        var candidate = getBandCandidate(table, row);
+        var closestInfo = getClosestRangeInfo(candidate, frequency);
+
+        if (!closestInfo) {
+          return;
+        }
+
+        if (closestInfo.distance < minDistance - tolerance) {
+          minDistance = closestInfo.distance;
+          matches = [cloneClosestCandidate(candidate, closestInfo)];
+          return;
+        }
+
+        if (Math.abs(closestInfo.distance - minDistance) <= tolerance) {
+          matches.push(cloneClosestCandidate(candidate, closestInfo));
+        }
+      });
+    });
+
+    return matches;
+  }
+
+  function getClosestBandsByFrequency(frequencyMHz) {
+    return getClosestBandMatchesByFrequency(frequencyMHz).map(function (match) {
+      return match.band;
+    });
+  }
+
+  function getClosestBandByFrequency(frequencyMHz) {
+    return getClosestBandsByFrequency(frequencyMHz)[0] || null;
   }
 
   function getBandsByFrequency(frequencyMHz) {
@@ -525,9 +660,27 @@
       createChip(match.frequencyRange)
     );
 
+    if (typeof match.closestDistance === "number" && match.closestDistance > 0) {
+      chips.appendChild(createChip("Closest"));
+      row.className += " band-visual-row-closest";
+    }
+
     row.append(band, chartGroup, chips);
 
     return row;
+  }
+
+  function getClosestBandCopy(matches) {
+    var distanceText = formatResult(matches[0].closestDistance) + " MHz away";
+    var details = matches.map(function (match) {
+      return match.band + " " + match.closestLabel + " edge at " + formatResult(match.closestFrequency) + " MHz";
+    });
+
+    if (matches.length === 1) {
+      return "Closest band: " + details[0] + " (" + distanceText + ").";
+    }
+
+    return "Closest bands: " + details.join(", ") + " (" + distanceText + ").";
   }
 
   function createBandVisualAxis(bounds, frequency) {
@@ -635,6 +788,7 @@
 
     function renderBandResults(frequency) {
       var matches;
+      var closestMatches;
       var frequencyText = formatResult(frequency);
       var bounds;
 
@@ -645,15 +799,27 @@
       matches = getBandMatchesByFrequency(frequency);
 
       if (matches.length === 0) {
-        bandResultsState.textContent = "No band match";
-        bandResultsCopy.textContent = "No defined 3GPP NR operating band includes " + frequencyText + " MHz.";
+        closestMatches = getClosestBandMatchesByFrequency(frequency);
+
+        if (closestMatches.length === 0) {
+          bandResultsState.textContent = "No band match";
+          bandResultsCopy.textContent = "No defined 3GPP NR operating band includes " + frequencyText + " MHz.";
+          renderBandRows(bandResultList, [
+            createMessageRow(
+              "No band match",
+              "No defined 3GPP NR band",
+              "This frequency is inside the NR-ARFCN global raster, but outside the FR1/FR2 operating-band ranges in 3GPP TS 38.104 V19.4.0.",
+              "Outside bands"
+            )
+          ]);
+          return;
+        }
+
+        bounds = getBandChartBounds(closestMatches, frequency);
+        bandResultsState.textContent = "No exact band";
+        bandResultsCopy.textContent = "No defined 3GPP NR band includes " + frequencyText + " MHz. " + getClosestBandCopy(closestMatches);
         renderBandRows(bandResultList, [
-          createMessageRow(
-            "No band match",
-            "No defined 3GPP NR band",
-            "This frequency is inside the NR-ARFCN global raster, but outside the FR1/FR2 operating-band ranges in 3GPP TS 38.104 V19.4.0.",
-            "Outside bands"
-          )
+          createBandVisual(closestMatches, frequency, bounds)
         ]);
         return;
       }
@@ -748,7 +914,10 @@
     getFrequency: getFrequency,
     getNrarfcn: getNrarfcn,
     getBandMatchesByFrequency: getBandMatchesByFrequency,
-    getBandsByFrequency: getBandsByFrequency
+    getBandsByFrequency: getBandsByFrequency,
+    getClosestBandMatchesByFrequency: getClosestBandMatchesByFrequency,
+    getClosestBandsByFrequency: getClosestBandsByFrequency,
+    getClosestBandByFrequency: getClosestBandByFrequency
   };
 
   initCalculator();
