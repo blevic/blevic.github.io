@@ -238,6 +238,111 @@ pre code{
   color: var(--accent);
 }
 
+.band-results {
+  margin-top: 22px;
+  padding: 18px;
+  background: #101923;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.band-results-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.band-results-eyebrow {
+  margin: 0 0 4px;
+  color: var(--accent2);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.band-results-heading h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.band-results-state,
+.band-result-chip {
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  color: #d7e3ee;
+  background: #0b0f14;
+  border: 1px solid #314155;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.band-results-copy {
+  max-width: 680px;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.band-result-states {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.band-result-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 14px;
+  background: #0b0f14;
+  border: 1px solid #2f4054;
+  border-radius: 8px;
+}
+
+.band-result-main {
+  min-width: 0;
+}
+
+.band-result-chips {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.band-result-row-empty {
+  border-style: dashed;
+}
+
+.band-result-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.band-result-row strong {
+  display: block;
+  color: var(--text);
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.band-result-row p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
 .mock-note {
   margin-top: 18px;
   padding: 14px 16px;
@@ -277,5 +382,20 @@ pre code{
 
   .ghost-button {
     width: 100%;
+  }
+
+  .band-results-heading,
+  .band-result-row {
+    flex-direction: column;
+  }
+
+  .band-results-state,
+  .band-result-chip,
+  .band-result-chips {
+    align-self: flex-start;
+  }
+
+  .band-result-chips {
+    justify-content: flex-start;
   }
 }

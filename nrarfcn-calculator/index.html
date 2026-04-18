@@ -22,7 +22,7 @@ permalink: /nrarfcn-calculator/
       <label class="converter-panel" data-panel="frequency" for="frequency-input">
         <span class="field-label">Frequency</span>
         <span class="input-with-unit">
-          <input id="frequency-input" name="frequency" type="number" inputmode="decimal" min="0" step="0.001" placeholder="3675" autocomplete="off">
+          <input id="frequency-input" name="frequency" type="number" inputmode="decimal" min="0" step="1" placeholder="3675" autocomplete="off">
           <span class="unit-label">MHz</span>
         </span>
         <span class="field-hint">Center frequency</span>
@@ -34,6 +34,31 @@ permalink: /nrarfcn-calculator/
       <button class="ghost-button" id="clear-calculator" type="button">Clear</button>
     </div>
   </form>
+
+  <section class="band-results" aria-labelledby="band-results-title">
+    <div class="band-results-heading">
+      <div>
+        <p class="band-results-eyebrow">Band lookup</p>
+        <h2 id="band-results-title">Applicable 3GPP bands</h2>
+      </div>
+      <span class="band-results-state" id="band-results-state">Waiting for input</span>
+    </div>
+
+    <p class="band-results-copy" id="band-results-copy">
+      Enter a frequency or NR-ARFCN to see applicable NR operating bands.
+    </p>
+
+    <div class="band-result-states" id="band-result-list" aria-live="polite" aria-label="Applicable band matches">
+      <div class="band-result-row band-result-row-empty">
+        <div>
+          <span class="band-result-label">Ready</span>
+          <strong>No value entered yet</strong>
+          <p>The matching bands will appear here after a valid input.</p>
+        </div>
+        <span class="band-result-chip">3GPP Rel 19</span>
+      </div>
+    </div>
+  </section>
 
   <div class="mock-note">
     <strong>Calculator status:</strong> Both directions use 3GPP TS 38.104 Table 5.4.2.1-1.
