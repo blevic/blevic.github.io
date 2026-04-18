@@ -366,6 +366,123 @@ pre code{
   border-radius: 8px;
 }
 
+body.nrarfcn-body {
+  --bg: #eef4f7;
+  --card: #ffffff;
+  --text: #17212b;
+  --muted: #546777;
+  --line: #cbd7df;
+  --accent: #096c86;
+  --accent2: #0f8f74;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.nrarfcn-body header.site {
+  border-bottom-color: #c8d5dd;
+}
+
+.nrarfcn-body .tagline,
+.nrarfcn-body nav a,
+.nrarfcn-body footer.site {
+  color: #607181;
+}
+
+.nrarfcn-body nav a:hover {
+  color: var(--text);
+}
+
+.nrarfcn-body .tool-page {
+  width: min(940px, calc(100vw - 40px));
+  margin-left: 50%;
+  padding: 18px 0 4px;
+  transform: translateX(-50%);
+}
+
+.nrarfcn-body .tool-kicker,
+.nrarfcn-body .band-results-eyebrow,
+.nrarfcn-body .band-result-label {
+  color: #0f8f74;
+}
+
+.nrarfcn-body .tool-lede,
+.nrarfcn-body .calculator-status,
+.nrarfcn-body .field-hint,
+.nrarfcn-body .unit-label,
+.nrarfcn-body .band-results-copy,
+.nrarfcn-body .band-result-row p {
+  color: var(--muted);
+}
+
+.nrarfcn-body .converter-panel,
+.nrarfcn-body .band-results {
+  background: #ffffff;
+  border-color: #cbd7df;
+  box-shadow: 0 16px 40px rgba(23, 33, 43, 0.08);
+}
+
+.nrarfcn-body .converter-panel.is-active,
+.nrarfcn-body .converter-panel:focus-within {
+  background: #f8fcfe;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(9, 108, 134, 0.14), 0 16px 40px rgba(23, 33, 43, 0.08);
+}
+
+.nrarfcn-body .converter-panel input {
+  color: var(--text);
+  background: #f7fafc;
+  border-color: #b8c8d2;
+}
+
+.nrarfcn-body .converter-panel input:focus {
+  border-color: var(--accent2);
+}
+
+.nrarfcn-body .converter-bridge {
+  color: #0a6e87;
+  background: #ffffff;
+  border-color: #cbd7df;
+}
+
+.nrarfcn-body .ghost-button {
+  color: var(--text);
+  background: #ffffff;
+  border-color: #b8c8d2;
+}
+
+.nrarfcn-body .ghost-button:hover,
+.nrarfcn-body .ghost-button:focus {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.nrarfcn-body .band-results-state,
+.nrarfcn-body .band-result-chip {
+  color: #17313a;
+  background: #e5f3f6;
+  border-color: #b9d6de;
+}
+
+.nrarfcn-body .band-result-row {
+  background: #f7fafc;
+  border-color: #d3dee5;
+}
+
+.nrarfcn-body .band-result-row strong {
+  color: var(--text);
+}
+
+.nrarfcn-body .mock-note {
+  color: #243845;
+  background: #f3f9fb;
+  border-color: #b7d7df;
+  border-left-color: #0f8f74;
+}
+
+.nrarfcn-body .tool-image img {
+  border-color: #cbd7df;
+}
+
 @media (max-width:760px) {
   .converter-grid {
     grid-template-columns: 1fr;

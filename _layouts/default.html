@@ -7,7 +7,7 @@
   <meta name="description" content="{{ page.description | default: site.description }}">
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
 </head>
-<body>
+<body{% if page.body_class %} class="{{ page.body_class }}"{% endif %}>
   <div class="wrap">
     {% include header.html %}
     {{ content }}
@@ -15,4 +15,3 @@
   </div>
 </body>
 </html>
-
