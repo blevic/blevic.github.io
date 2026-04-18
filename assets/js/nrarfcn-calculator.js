@@ -346,9 +346,19 @@
     var segmentLabel = createElement("span", "band-range-segment-label", label);
     var left = getRangePercent(range.low, bounds);
     var right = getRangePercent(range.high, bounds);
-    var width = Math.max(right - left, 0.8);
+    var naturalWidth = right - left;
+    var minDisplayWidth = 2.2;
+    var width = Math.max(naturalWidth, minDisplayWidth);
+    var center = (left + right) / 2;
 
-    if (left + width > 100) {
+    if (naturalWidth < minDisplayWidth) {
+      segment.className += " band-range-segment-compact";
+      left = center - width / 2;
+    }
+
+    if (left < 0) {
+      left = 0;
+    } else if (left + width > 100) {
       left = 100 - width;
     }
 

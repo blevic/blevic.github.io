@@ -387,7 +387,7 @@ pre code{
 .band-range-axis {
   position: relative;
   height: 42px;
-  margin: 0 118px 0 66px;
+  margin: 0 130px 0 78px;
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 700;
@@ -463,6 +463,10 @@ pre code{
   gap: 12px;
   align-items: center;
   min-width: 0;
+  padding: 12px;
+  background: rgba(239, 245, 248, 0.58);
+  border: 1px solid rgba(203, 215, 223, 0.82);
+  border-radius: 8px;
 }
 
 .band-visual-name {
@@ -504,7 +508,7 @@ pre code{
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
+  min-width: 0;
   overflow: hidden;
   color: #ffffff;
   border-radius: 7px;
@@ -512,6 +516,10 @@ pre code{
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
+}
+
+.band-range-segment-compact .band-range-segment-label {
+  display: none;
 }
 
 .band-range-segment-label {
