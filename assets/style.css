@@ -471,10 +471,16 @@ pre code{
   line-height: 1.2;
 }
 
+.band-visual-chart {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
 .band-range-track {
   position: relative;
   min-width: 0;
-  height: 32px;
+  height: 34px;
   overflow: hidden;
   background: #e6edf2;
   border: 1px solid #d0dbe3;
@@ -493,19 +499,24 @@ pre code{
 
 .band-range-segment {
   position: absolute;
-  top: 5px;
-  bottom: 5px;
+  top: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 14px;
+  min-width: 20px;
   overflow: hidden;
   color: #ffffff;
-  border-radius: 6px;
+  border-radius: 7px;
   font-size: 0.68rem;
   font-weight: 800;
   line-height: 1;
   white-space: nowrap;
+}
+
+.band-range-segment-label {
+  position: relative;
+  z-index: 1;
 }
 
 .band-range-segment-ul {
@@ -517,6 +528,51 @@ pre code{
 }
 
 .band-range-segment-tdd {
+  background: linear-gradient(to bottom, #4f8fd9 0 50%, #24a879 50% 100%);
+}
+
+.band-range-summary {
+  position: relative;
+  height: 22px;
+  min-width: 0;
+  overflow: visible;
+}
+
+.band-range-summary-item {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 2px 6px;
+  color: #4f5d68;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #d6e0e7;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.band-range-summary-item::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.band-range-summary-ul::before {
+  background: #4f8fd9;
+}
+
+.band-range-summary-dl::before {
+  background: #24a879;
+}
+
+.band-range-summary-tdd::before {
   background: linear-gradient(to bottom, #4f8fd9 0 50%, #24a879 50% 100%);
 }
 

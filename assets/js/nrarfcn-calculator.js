@@ -342,7 +342,8 @@
   }
 
   function createBandSegment(kind, range, bounds, label) {
-    var segment = createElement("span", "band-range-segment band-range-segment-" + kind, label);
+    var segment = createElement("span", "band-range-segment band-range-segment-" + kind);
+    var segmentLabel = createElement("span", "band-range-segment-label", label);
     var left = getRangePercent(range.low, bounds);
     var right = getRangePercent(range.high, bounds);
     var width = Math.max(right - left, 0.8);
@@ -354,8 +355,115 @@
     segment.style.left = left + "%";
     segment.style.width = width + "%";
     segment.title = label + " " + getRangeText(range);
+    segment.appendChild(segmentLabel);
 
     return segment;
+  }
+
+  function getRangeSummarySpec(kind, label, range, bounds) {
+    var text = label + " " + formatResult(range.low) + "-" + formatResult(range.high);
+    var left = getRangePercent(range.low, bounds);
+    var right = getRangePercent(range.high, bounds);
+    var center = (left + right) / 2;
+    var edgePadding = 3;
+    var estimatedWidth = Math.max(13, Math.min(30, text.length * 1.15));
+    var labelLeft = center - estimatedWidth / 2;
+    var labelRight = center + estimatedWidth / 2;
+    var anchor = center;
+    var transform = "translateX(-50%)";
+
+    if (labelLeft < edgePadding) {
+      anchor = edgePadding;
+      transform = "translateX(0)";
+      labelLeft = edgePadding;
+      labelRight = edgePadding + estimatedWidth;
+    }
+
+    if (labelRight > 100 - edgePadding) {
+      anchor = 100 - edgePadding;
+      transform = "translateX(-100%)";
+      labelRight = 100 - edgePadding;
+      labelLeft = 100 - edgePadding - estimatedWidth;
+    }
+
+    return {
+      kind: kind,
+      label: label,
+      range: range,
+      text: text,
+      anchor: Math.max(0, Math.min(100, anchor)),
+      transform: transform,
+      labelLeft: Math.max(0, labelLeft),
+      labelRight: Math.min(100, labelRight)
+    };
+  }
+
+  function createRangeSummaryItem(spec, lane) {
+    var item = createElement(
+      "span",
+      "band-range-summary-item band-range-summary-" + spec.kind,
+      spec.text
+    );
+
+    item.style.left = spec.anchor + "%";
+    item.style.top = lane * 22 + "px";
+    item.style.transform = spec.transform;
+    item.title = spec.label + " " + getRangeText(spec.range);
+
+    return item;
+  }
+
+  function getRangeSummaryLanes(specs) {
+    var laneEnds = [];
+
+    return specs.map(function (spec) {
+      var lane = 0;
+
+      while (typeof laneEnds[lane] !== "undefined" && spec.labelLeft < laneEnds[lane] + 1.5) {
+        lane += 1;
+      }
+
+      laneEnds[lane] = spec.labelRight;
+
+      return lane;
+    });
+  }
+
+  function createBandRangeSummary(match, bounds) {
+    var summary = createElement("div", "band-range-summary");
+    var specs = [];
+    var lanes;
+    var laneCount;
+
+    if (match.duplexMode === "TDD" && rangesAreSame(match.uplink, match.downlink)) {
+      specs.push(getRangeSummarySpec("tdd", "UL/DL", match.uplink, bounds));
+    } else {
+      if (match.uplink) {
+        specs.push(getRangeSummarySpec("ul", "UL", match.uplink, bounds));
+      }
+
+      if (match.downlink) {
+        specs.push(getRangeSummarySpec("dl", "DL", match.downlink, bounds));
+      }
+    }
+
+    if (specs.length === 0) {
+      return summary;
+    }
+
+    specs.sort(function (first, second) {
+      return first.labelLeft - second.labelLeft;
+    });
+
+    lanes = getRangeSummaryLanes(specs);
+    laneCount = Math.max.apply(Math, lanes) + 1;
+    summary.style.height = laneCount * 22 + "px";
+
+    specs.forEach(function (spec, index) {
+      summary.appendChild(createRangeSummaryItem(spec, lanes[index]));
+    });
+
+    return summary;
   }
 
   function createTargetMarker(frequency, bounds) {
@@ -390,6 +498,7 @@
   function createBandVisualRow(match, bounds, frequency) {
     var row = createElement("div", "band-visual-row");
     var band = createElement("strong", "band-visual-name", match.band);
+    var chartGroup = createElement("div", "band-visual-chart");
     var chart = createElement("div", "band-range-track");
     var chips = createElement("div", "band-result-chips");
 
@@ -399,13 +508,14 @@
     );
 
     chart.setAttribute("aria-label", match.band + ": " + getBandDetailText(match));
+    chartGroup.append(chart, createBandRangeSummary(match, bounds));
 
     chips.append(
       createChip(match.duplexMode),
       createChip(match.frequencyRange)
     );
 
-    row.append(band, chart, chips);
+    row.append(band, chartGroup, chips);
 
     return row;
   }
