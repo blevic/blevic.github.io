@@ -597,6 +597,11 @@ pre code{
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
+.band-range-segment-thin {
+  min-width: 2px;
+  box-shadow: 0 0 0 1px rgba(23, 33, 43, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+}
+
 .band-range-segment-label {
   position: relative;
   z-index: 1;
@@ -1040,6 +1045,10 @@ body.nrarfcn-body {
   cursor: pointer;
 }
 
+.band-picker-option[hidden] {
+  display: none;
+}
+
 .band-picker-option:has(input:checked) {
   background: #e5f3f6;
   border-color: #86bcc9;
@@ -1081,15 +1090,64 @@ body.nrarfcn-body {
 }
 
 .band-overlay-track {
-  min-height: 34px;
+  height: 48px;
+  min-height: 48px;
 }
 
 .band-overlay-segment {
+  top: 7px;
+  bottom: 7px;
   align-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 7px;
   font-size: 0.62rem;
-  opacity: 0.92;
+  opacity: 0.9;
+}
+
+.band-overlay-segment .band-range-segment-label {
+  display: none;
+}
+
+.band-overlay-segment.band-range-segment-ul {
+  background: rgba(52, 126, 197, 0.84);
+}
+
+.band-overlay-segment.band-range-segment-dl {
+  background: rgba(21, 147, 108, 0.84);
+}
+
+.band-overlay-segment.band-range-segment-tdd {
+  background: linear-gradient(to bottom, rgba(52, 126, 197, 0.84) 0 50%, rgba(21, 147, 108, 0.84) 50% 100%);
+}
+
+.band-overlay-segment.band-range-segment-thin {
+  opacity: 1;
+}
+
+.band-overlay-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.band-overlay-key-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 3px 7px;
+  color: #4f5d68;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid #d6e0e7;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.band-overlay-key-item strong {
+  color: var(--text);
+  font-size: 0.74rem;
 }
 
 .band-result-chip-same-axis,

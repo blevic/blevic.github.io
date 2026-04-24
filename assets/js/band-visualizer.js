@@ -191,13 +191,14 @@
     var left = getRangePercent(range.low, bounds);
     var right = getRangePercent(range.high, bounds);
     var naturalWidth = right - left;
-    var minDisplayWidth = 2.2;
-    var width = Math.max(naturalWidth, minDisplayWidth);
-    var center = (left + right) / 2;
+    var width = Math.max(0, naturalWidth);
 
-    if (naturalWidth < minDisplayWidth) {
+    if (naturalWidth < 7) {
       segment.className += " band-range-segment-compact";
-      left = center - width / 2;
+    }
+
+    if (naturalWidth < 1.2) {
+      segment.className += " band-range-segment-thin";
     }
 
     if (left < 0) {
@@ -410,30 +411,44 @@
     return visual;
   }
 
-  function createOverlaySegment(band, kind, range, bounds, laneIndex) {
+  function createOverlaySegment(band, kind, range, bounds, bandIndex) {
     var segment = createBandSegment(kind, range, bounds, band.band + " " + (kind === "tdd" ? "UL/DL" : kind.toUpperCase()));
 
     segment.className += " band-overlay-segment";
-    segment.style.top = 4 + laneIndex * 20 + "px";
-    segment.style.bottom = "auto";
-    segment.style.height = "16px";
+    segment.style.zIndex = 3 + bandIndex;
 
     return segment;
   }
 
-  function appendOverlaySegments(track, band, bounds, laneIndex) {
+  function appendOverlaySegments(track, band, bounds, bandIndex) {
     if (band.duplexMode === "TDD" && rangesAreSame(band.uplink, band.downlink)) {
-      track.appendChild(createOverlaySegment(band, "tdd", band.uplink, bounds, laneIndex));
+      track.appendChild(createOverlaySegment(band, "tdd", band.uplink, bounds, bandIndex));
       return;
     }
 
     if (band.uplink) {
-      track.appendChild(createOverlaySegment(band, "ul", band.uplink, bounds, laneIndex));
+      track.appendChild(createOverlaySegment(band, "ul", band.uplink, bounds, bandIndex));
     }
 
     if (band.downlink) {
-      track.appendChild(createOverlaySegment(band, "dl", band.downlink, bounds, laneIndex));
+      track.appendChild(createOverlaySegment(band, "dl", band.downlink, bounds, bandIndex));
     }
+  }
+
+  function createOverlayBandKey(bands) {
+    var key = createElement("div", "band-overlay-key");
+
+    bands.forEach(function (band) {
+      var item = createElement("span", "band-overlay-key-item");
+      var name = createElement("strong", "", band.band);
+      var meta = createElement("span", "", band.duplexMode + " " + band.frequencyRange);
+
+      item.title = getBandDetailText(band);
+      item.append(name, meta);
+      key.appendChild(item);
+    });
+
+    return key;
   }
 
   function createOverlayVisual(bands, bounds) {
@@ -445,8 +460,6 @@
     var track = createElement("div", "band-range-track band-overlay-track");
     var chips = createElement("div", "band-result-chips");
 
-    track.style.height = Math.max(34, bands.length * 20 + 8) + "px";
-
     bands.forEach(function (band, index) {
       appendOverlaySegments(track, band, bounds, index);
     });
@@ -456,7 +469,7 @@
     }).join(", "));
 
     bandHeader.append(bandName);
-    chartGroup.appendChild(track);
+    chartGroup.append(track, createOverlayBandKey(bands));
     chips.append(createChip("Same axis"), createChip("3GPP Rel 19"));
     row.append(bandHeader, chartGroup, chips);
     visual.append(createBandVisualAxis(bounds), row, createBandLegend());
@@ -539,6 +552,59 @@
       label.dataset.meta = (band.duplexMode + " " + band.frequencyRange).toLowerCase();
       label.append(checkbox, name, meta);
       picker.appendChild(label);
+    });
+  }
+
+  function getBandSearchTerms(value) {
+    return value
+      .toLowerCase()
+      .split(/[\s,;]+/)
+      .map(function (term) {
+        return term.trim();
+      })
+      .filter(Boolean);
+  }
+
+  function getNormalizedBandTerm(term) {
+    if (/^\d+$/.test(term)) {
+      return "n" + term;
+    }
+
+    return term;
+  }
+
+  function bandTermMatchesOption(term, option) {
+    var normalizedTerm = getNormalizedBandTerm(term);
+
+    return option.dataset.band.indexOf(normalizedTerm) !== -1 || option.dataset.meta.indexOf(term) !== -1;
+  }
+
+  function bandTermIsUnambiguous(normalizedTerm) {
+    var prefixMatches = allBands.filter(function (band) {
+      return band.band.indexOf(normalizedTerm) === 0;
+    });
+
+    return prefixMatches.length === 1 && prefixMatches[0].band === normalizedTerm;
+  }
+
+  function updateBandSearch(searchInput, picker, forceExactSelection) {
+    var terms = getBandSearchTerms(searchInput.value);
+    var options = picker.querySelectorAll(".band-picker-option");
+    var exactTerms = terms.map(getNormalizedBandTerm);
+
+    options.forEach(function (option) {
+      var checkbox = option.querySelector("input");
+      var isExactMatch = exactTerms.indexOf(option.dataset.band) !== -1;
+      var shouldSelectExactMatch = isExactMatch && (forceExactSelection || bandTermIsUnambiguous(option.dataset.band));
+      var isVisible = terms.length === 0 || terms.some(function (term) {
+        return bandTermMatchesOption(term, option);
+      });
+
+      option.hidden = !isVisible;
+
+      if (shouldSelectExactMatch && checkbox && !checkbox.checked) {
+        checkbox.checked = true;
+      }
     });
   }
 
@@ -714,18 +780,26 @@
     picker.addEventListener("change", renderViewer);
 
     searchInput.addEventListener("input", function () {
-      var query = searchInput.value.trim().toLowerCase();
-      var options = picker.querySelectorAll(".band-picker-option");
+      updateBandSearch(searchInput, picker, false);
+      renderViewer();
+    });
 
-      options.forEach(function (option) {
-        option.hidden = query !== "" && option.dataset.band.indexOf(query) === -1 && option.dataset.meta.indexOf(query) === -1;
-      });
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter") {
+        return;
+      }
+
+      event.preventDefault();
+      updateBandSearch(searchInput, picker, true);
+      renderViewer();
     });
 
     clearSelectionButton.addEventListener("click", function () {
       picker.querySelectorAll("input:checked").forEach(function (input) {
         input.checked = false;
       });
+      searchInput.value = "";
+      updateBandSearch(searchInput, picker, false);
       renderViewerIdle();
       searchInput.focus();
     });
