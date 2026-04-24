@@ -597,6 +597,11 @@ pre code{
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
+.band-range-segment-thin {
+  min-width: 2px;
+  box-shadow: 0 0 0 1px rgba(23, 33, 43, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+}
+
 .band-range-segment-label {
   position: relative;
   z-index: 1;
@@ -930,6 +935,228 @@ body.nrarfcn-body {
   max-height: 300px;
 }
 
+.band-tool-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 4px;
+  background: #edf3f6;
+  border: 1px solid #d4e0e7;
+  border-radius: 8px;
+}
+
+.band-tool-tab {
+  flex: 1 1 0;
+  min-height: 40px;
+  padding: 8px 12px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.band-tool-tab.is-active,
+.band-tool-tab:hover,
+.band-tool-tab:focus {
+  color: var(--text);
+  background: #ffffff;
+  border-color: #cbd7df;
+}
+
+.band-tool-panel {
+  margin-top: 16px;
+}
+
+.band-control-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.band-control,
+.band-search {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.band-control input,
+.band-search input {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  color: var(--text);
+  background: #f7fafc;
+  border: 1px solid #b8c8d2;
+  border-radius: 8px;
+  font: inherit;
+  outline: none;
+}
+
+.band-control .input-with-unit input {
+  padding-right: 86px;
+}
+
+.band-control .unit-label {
+  right: 34px;
+}
+
+.band-control input:focus,
+.band-search input:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(15, 143, 116, 0.12);
+}
+
+.band-picker-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.band-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(116px, 1fr));
+  gap: 8px;
+  max-height: 250px;
+  margin-top: 12px;
+  padding: 10px;
+  overflow: auto;
+  background: #f7fafc;
+  border: 1px solid #d3dee5;
+  border-radius: 8px;
+}
+
+.band-picker-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 8px 9px;
+  background: #ffffff;
+  border: 1px solid #d3dee5;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.band-picker-option[hidden] {
+  display: none;
+}
+
+.band-picker-option:has(input:checked) {
+  background: #e5f3f6;
+  border-color: #86bcc9;
+}
+
+.band-picker-option input {
+  grid-row: span 2;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.band-picker-name {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.band-picker-meta {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.band-range-segment {
+  z-index: 2;
+}
+
+.band-overlay-visual {
+  --band-name-col: 78px;
+}
+
+.band-overlay-row .band-visual-name {
+  font-size: 0.92rem;
+}
+
+.band-overlay-track {
+  height: 48px;
+  min-height: 48px;
+}
+
+.band-overlay-segment {
+  top: 7px;
+  bottom: 7px;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 7px;
+  font-size: 0.62rem;
+  opacity: 0.9;
+}
+
+.band-overlay-segment .band-range-segment-label {
+  display: none;
+}
+
+.band-overlay-segment.band-range-segment-ul {
+  background: rgba(52, 126, 197, 0.84);
+}
+
+.band-overlay-segment.band-range-segment-dl {
+  background: rgba(21, 147, 108, 0.84);
+}
+
+.band-overlay-segment.band-range-segment-tdd {
+  background: linear-gradient(to bottom, rgba(52, 126, 197, 0.84) 0 50%, rgba(21, 147, 108, 0.84) 50% 100%);
+}
+
+.band-overlay-segment.band-range-segment-thin {
+  opacity: 1;
+}
+
+.band-overlay-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.band-overlay-key-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 3px 7px;
+  color: #4f5d68;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid #d6e0e7;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.band-overlay-key-item strong {
+  color: var(--text);
+  font-size: 0.74rem;
+}
+
+.band-result-chip-same-axis,
+.band-result-chip-band-viewer {
+  color: #17313a;
+  background: #e5f3f6;
+  border-color: #b9d6de;
+}
+
 @media (max-width:760px) {
   .converter-grid {
     grid-template-columns: 1fr;
@@ -985,5 +1212,15 @@ body.nrarfcn-body {
 
   .band-range-track {
     width: 100%;
+  }
+
+  .band-tool-tabs,
+  .band-control-grid,
+  .band-picker-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .band-tool-tabs {
+    display: grid;
   }
 }

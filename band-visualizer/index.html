@@ -1,0 +1,78 @@
+---
+layout: default
+title: Band Visualizer
+description: Plot 3GPP NR bands by frequency range or selected band list.
+permalink: /band-visualizer/
+body_class: nrarfcn-body
+---
+<section class="tool-page nrarfcn-page band-visualizer-page" aria-labelledby="band-visualizer-title">
+  <h1 id="band-visualizer-title">Band Visualizer</h1>
+  <p class="tool-lede">Plot 3GPP NR operating bands by frequency range.</p>
+
+  <section class="band-results" aria-labelledby="band-results-title">
+    <div class="band-results-heading">
+      <div>
+        <h2 id="band-results-title">Applicable 3GPP bands</h2>
+      </div>
+      <span class="band-results-state" id="band-visualizer-state">Range mode</span>
+    </div>
+
+    <div class="band-tool-tabs" role="tablist" aria-label="Band visualizer modes">
+      <button class="band-tool-tab is-active" id="range-mode-tab" type="button" role="tab" aria-selected="true" aria-controls="range-mode-panel" data-mode="range">Plot by range</button>
+      <button class="band-tool-tab" id="viewer-mode-tab" type="button" role="tab" aria-selected="false" aria-controls="viewer-mode-panel" data-mode="viewer">Band viewer</button>
+    </div>
+
+    <form class="band-tool-panel" id="range-mode-panel" role="tabpanel" aria-labelledby="range-mode-tab">
+      <div class="band-control-grid">
+        <label class="band-control" for="range-low-input">
+          <span class="field-label">Left frequency</span>
+          <span class="input-with-unit">
+            <input id="range-low-input" name="range-low" type="number" inputmode="numeric" min="0" max="100000" step="1" placeholder="3300" autocomplete="off">
+            <span class="unit-label">MHz</span>
+          </span>
+        </label>
+
+        <label class="band-control" for="range-high-input">
+          <span class="field-label">Right frequency</span>
+          <span class="input-with-unit">
+            <input id="range-high-input" name="range-high" type="number" inputmode="numeric" min="0" max="100000" step="1" placeholder="3800" autocomplete="off">
+            <span class="unit-label">MHz</span>
+          </span>
+        </label>
+
+        <button class="ghost-button" id="clear-band-range" type="button">Clear</button>
+      </div>
+    </form>
+
+    <div class="band-tool-panel" id="viewer-mode-panel" role="tabpanel" aria-labelledby="viewer-mode-tab" hidden>
+      <div class="band-picker-toolbar">
+        <label class="band-search" for="band-search-input">
+          <span class="field-label">Add or filter bands</span>
+          <input id="band-search-input" type="search" placeholder="n78, n257" autocomplete="off">
+        </label>
+        <button class="ghost-button" id="clear-band-selection" type="button">Clear selection</button>
+      </div>
+      <div class="band-picker" id="band-picker" aria-label="Select NR bands"></div>
+    </div>
+
+    <p class="band-results-copy" id="band-visualizer-copy">
+      Enter a frequency range to see the NR operating bands that overlap it.
+    </p>
+
+    <div class="band-result-states" id="band-visualizer-output" aria-live="polite" aria-label="Band visualizer output">
+      <div class="band-result-row band-result-row-empty">
+        <div>
+          <span class="band-result-label">Ready</span>
+          <strong>No range entered yet</strong>
+          <p>The matching bands will appear here after a valid input.</p>
+        </div>
+        <span class="band-result-chip">3GPP Rel 19</span>
+      </div>
+    </div>
+  </section>
+
+  <p class="calculator-references">References: 3GPP TS 38.104 Tables 5.2-1 and 5.2-2.</p>
+</section>
+
+<script src="{{ '/assets/js/nrarfcn-calculator.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/band-visualizer.js' | relative_url }}"></script>
