@@ -26,3 +26,8 @@ For captioned images, keep this figure pattern:
   <figcaption>Caption text here.</figcaption>
 </figure>
 
+For homepage/blog card previews, generate a matching thumbnail:
+
+```sh
+sips -Z 360 assets/images/example.png --out assets/images/thumbs/example.png
+```

@@ -1,5 +1,6 @@
 {% assign post = include.post %}
-{% assign preview_src = post.image | default: post.thumbnail %}
+{% assign explicit_thumbnail = post.thumbnail %}
+{% assign preview_src = explicit_thumbnail | default: post.image %}
 
 {% if preview_src == nil or preview_src == "" %}
   {% assign image_parts = post.content | split: '<img ' %}
@@ -12,10 +13,23 @@
   {% endif %}
 {% endif %}
 
-<a class="card{% if preview_src %} has-preview{% endif %}" href="{{ post.url | relative_url }}">
-  {% if preview_src %}
+{% assign card_image_src = nil %}
+{% if explicit_thumbnail and explicit_thumbnail != "" %}
+  {% assign card_image_src = explicit_thumbnail %}
+{% elsif preview_src contains "/assets/images/" %}
+  {% assign thumbnail_src = preview_src | replace_first: "/assets/images/", "/assets/images/thumbs/" %}
+  {% assign thumbnail_file = site.static_files | where: "path", thumbnail_src | first %}
+  {% if thumbnail_file %}
+    {% assign card_image_src = thumbnail_src %}
+  {% endif %}
+{% else %}
+  {% assign card_image_src = preview_src %}
+{% endif %}
+
+<a class="card{% if card_image_src and card_image_src != "" %} has-preview{% endif %}" href="{{ post.url | relative_url }}">
+  {% if card_image_src and card_image_src != "" %}
     <div class="card-preview">
-      <img src="{{ preview_src | relative_url }}" alt="" loading="lazy">
+      <img src="{{ card_image_src | relative_url }}" alt="" loading="lazy">
     </div>
   {% endif %}
   <div class="card-body">

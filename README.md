@@ -80,6 +80,26 @@ Preferred location:
 assets/images/
 ```
 
+Homepage and blog cards use lightweight thumbnails from:
+
+```text
+assets/images/thumbs/
+```
+
+When adding a post image, also generate a matching thumbnail with the same filename:
+
+```sh
+sips -Z 360 assets/images/example.png --out assets/images/thumbs/example.png
+```
+
+The card include automatically looks for the first image in the post and swaps `/assets/images/` for `/assets/images/thumbs/`. If the matching thumbnail is missing, the card skips the preview instead of loading the full-size image.
+
+You can also set an explicit thumbnail in the post front matter when needed:
+
+```yaml
+thumbnail: /assets/images/thumbs/example.png
+```
+
 For images with captions, use the existing figure pattern and Jekyll's `relative_url` filter:
 
 ```html
