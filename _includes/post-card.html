@@ -1,8 +1,28 @@
-<a class="card" href="{{ include.post.url | relative_url }}">
-  <div class="meta">
-    {{ include.post.date | date: "%B %-d, %Y" }}{% if include.post.categories and include.post.categories.size > 0 %} · {{ include.post.categories | join: ", " }}{% endif %}
-  </div>
-  <h2>{{ include.post.title }}</h2>
-  <div>{{ include.post.summary }}</div>
-</a>
+{% assign post = include.post %}
+{% assign preview_src = post.image | default: post.thumbnail %}
 
+{% if preview_src == nil or preview_src == "" %}
+  {% assign image_parts = post.content | split: '<img ' %}
+  {% if image_parts.size > 1 %}
+    {% assign image_tag = image_parts[1] | split: '>' | first %}
+    {% assign src_parts = image_tag | split: 'src="' %}
+    {% if src_parts.size > 1 %}
+      {% assign preview_src = src_parts[1] | split: '"' | first %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+<a class="card{% if preview_src %} has-preview{% endif %}" href="{{ post.url | relative_url }}">
+  {% if preview_src %}
+    <div class="card-preview">
+      <img src="{{ preview_src | relative_url }}" alt="" loading="lazy">
+    </div>
+  {% endif %}
+  <div class="card-body">
+    <div class="meta">
+      {{ post.date | date: "%B %-d, %Y" }}{% if post.categories and post.categories.size > 0 %} · {{ post.categories | join: ", " }}{% endif %}
+    </div>
+    <h2>{{ post.title }}</h2>
+    <div class="card-summary">{{ post.summary }}</div>
+  </div>
+</a>

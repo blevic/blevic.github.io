@@ -31,9 +31,46 @@ nav a:hover{color:var(--text)}
 .hero p{font-size:1.08rem;color:var(--muted);max-width:720px}
 .cards{display:grid;gap:16px;margin-top:26px}
 .card{
-  display:block;padding:18px 18px 16px;background:var(--card);
-  border:1px solid var(--line);border-radius:16px;color:var(--text)
+  display:block;
+  padding:18px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  color:var(--text);
+  transition:background 160ms ease,border-color 160ms ease,transform 160ms ease;
 }
+.card.has-preview{
+  display:grid;
+  grid-template-columns:148px minmax(0,1fr);
+  gap:18px;
+  align-items:center;
+}
+.card:hover,
+.card:focus{
+  background:#151f2a;
+  border-color:#3a536e;
+  text-decoration:none;
+  transform:translateY(-1px);
+}
+.card-preview{
+  overflow:hidden;
+  width:100%;
+  aspect-ratio:4 / 3;
+  background:#0f151d;
+  border:1px solid rgba(155,176,195,.18);
+  border-radius:12px;
+}
+.card-preview img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.card-body{min-width:0}
+.card h2{font-size:1.22rem}
+.card-summary{color:#cbd7e4}
+.card:hover h2,
+.card:focus h2{color:#f6fbff}
 .card h2,.card h3{margin:0 0 8px;line-height:1.25}
 .meta{font-size:.95rem;color:var(--muted);margin-bottom:10px}
 .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
@@ -75,6 +112,8 @@ pre code{
 }
 @media (max-width:640px){
   .hero h1{font-size:1.9rem}
+  .card.has-preview{grid-template-columns:1fr;gap:14px}
+  .card-preview{aspect-ratio:16 / 9}
   article.post h1{font-size:1.9rem}
 }
 .post-image {
